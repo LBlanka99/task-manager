@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManager.Entities.Models;
 
-public class Task
+public class TaskModel
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,7 +16,7 @@ public class Task
     public List<UserModel> Assignees { get; set; } = new List<UserModel>();
     [Range(1, 100)]
     public int Points { get; set; }
-    public List<Tag> Tags { get; set; } = new List<Tag>();
+    public List<TagModel> Tags { get; set; } = new List<TagModel>();
     public string? Description { get; set; }
     [DefaultValue(Enums.TaskStatus.InProgress)]
     public TaskStatus status { get; set; }

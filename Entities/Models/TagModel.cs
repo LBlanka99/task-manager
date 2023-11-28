@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskManager.Entities.Models;
 
-public class Tag
+public class TagModel
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
