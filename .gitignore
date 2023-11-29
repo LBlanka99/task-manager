@@ -464,3 +464,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Files with '.db' extension
+*.db

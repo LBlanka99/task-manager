@@ -12,6 +12,6 @@ public class GroupModel
     [MaxLength(50)]
     public string Name { get; set; }
     public List<UserModel> Members { get; set; } = new List<UserModel>();
-    public List<Tag> Tags { get; set; } = new List<Tag>();
-    public List<Task> Tasks { get; set; } = new List<Task>();
+    public List<TagModel> Tags { get; set; } = new List<TagModel>();
+    public List<TaskModel> Tasks { get; set; } = new List<TaskModel>();
 }
