@@ -19,7 +19,7 @@ public class TaskModel
     public List<TagModel> Tags { get; set; } = new List<TagModel>();
     public string? Description { get; set; }
     [DefaultValue(Enums.TaskStatus.InProgress)]
-    public TaskStatus status { get; set; }
+    public TaskStatus Status { get; set; }
     public string? ConfirmingPhoto { get; set; }
 
 }
