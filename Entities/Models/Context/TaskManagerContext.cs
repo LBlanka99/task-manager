@@ -15,6 +15,12 @@ public class TaskManagerContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<TaskModel>()
+            .HasMany(t => t.Assignees)
+            .WithMany();
+
+        modelBuilder.Entity<TaskModel>()
+            .HasMany(t => t.Tags)
+            .WithMany();
     }
 }
