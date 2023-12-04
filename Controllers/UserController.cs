@@ -25,6 +25,7 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<UserModel> PostNewUserToGroup([FromBody] NewUserDTO user)
     {
+        Console.WriteLine("hahó");
         if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.GroupName) || string.IsNullOrWhiteSpace(user.Password))
         {
             throw new ArgumentException("User name, group name and password are required fields!");
@@ -55,6 +56,12 @@ public class UserController : ControllerBase
 
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
+    }
+
+    [HttpGet("log-out")]
+    public async Task LogOutUser()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
     
 }
