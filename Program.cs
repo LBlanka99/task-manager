@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Entities.Models.Context;
+using TaskManager.Exceptions;
+using TaskManager.Services;
+using TaskManager.Services.Interfaces;
 
 const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -32,8 +35,41 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddDbContext<TaskManagerContext>(options =>
     options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddTransient<TaskManagerContext>();
+builder.Services.AddTransient<IGroupService, GroupService>();
+builder.Services.AddTransient<IUserService, UserService>();
+
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        Console.WriteLine(context.Response.Body);
+        await next.Invoke();
+    }
+    catch (IdNotFoundException e)
+    {
+        context.Response.StatusCode = 404;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (UserNameAlreadyInUseException e)
+    {
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (ArgumentException e)
+    {
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (GroupNameAlreadyInUseException e)
+    {
+        context.Response.StatusCode = 400;
+        await context.Response.WriteAsync(e.Message);
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
