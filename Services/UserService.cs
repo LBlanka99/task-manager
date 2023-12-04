@@ -61,4 +61,33 @@ public class UserService : TaskManagerService, IUserService
         
         return user;
     }
+
+    public async Task<UserModel> LogIn(LogInDTO credentials)
+    {
+        GroupModel? group = await _groupService.GetGroupByName(credentials.GroupName);
+        if (group == null)
+        {
+            throw new GroupNotFoundException($"The group with name {credentials.GroupName} was not found.");
+        }
+        
+        UserModel? user = group.Members.Find(u => u.UserName == credentials.UserName);
+        if (user == null)
+        {
+            throw new UserNotFoundException(
+                $"The user with name {credentials.UserName} was not found in the {credentials.GroupName} group.");
+        }
+
+        var result = _hasher.VerifyHashedPassword(user, user.Password, credentials.Password);
+
+        //vajon jó gyakorlat külön exceptiont dobni az incorrect username-re és password-re?
+        
+        if (result == PasswordVerificationResult.Failed)
+        {
+            throw new IncorrectPasswordException("The provided password is incorrect!");
+        }
+        
+        //itt vajon külön meg kéne néznem a PasswordVerificationResult.SuccessRehashNeeded esetet is?
+
+        return user;
+    }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Entities.Models.Context;
 using TaskManager.Exceptions;
@@ -39,6 +40,8 @@ builder.Services.AddTransient<TaskManagerContext>();
 builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IUserService, UserService>();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 var app = builder.Build();
 
@@ -80,6 +83,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(myAllowSpecificOrigins);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
