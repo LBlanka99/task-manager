@@ -15,6 +15,5 @@ public class UserModel
     [Required]
     public string Password { get; set; }
     public string? ProfilePicture { get; set; }
-    public GroupModel? Group { get; set; }
     public List<string> Roles { get; set; } = new List<string>();
 }
