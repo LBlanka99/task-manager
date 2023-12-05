@@ -51,7 +51,7 @@ const LoginPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       
-      <IonContent className="ion-padding">
+      <IonContent className="ion-padding" scrollY={false}>
         <IonGrid className="login-content">
             <form onSubmit={handleLogin}>
             <div className="login-container">
