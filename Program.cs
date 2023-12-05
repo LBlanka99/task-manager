@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: myAllowSpecificOrigins,
         policy  =>
         {
-            policy.WithOrigins("http://localhost:5180", "http://localhost:8100/")
+            policy.WithOrigins("http://localhost:8100")
                 .AllowAnyHeader()
                 .AllowCredentials()
                 .AllowAnyMethod();
@@ -70,6 +70,21 @@ app.Use(async (context, next) =>
     catch (GroupNameAlreadyInUseException e)
     {
         context.Response.StatusCode = 400;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (GroupNotFoundException e)
+    {
+        context.Response.StatusCode = 404;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (UserNotFoundException e)
+    {
+        context.Response.StatusCode = 401;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (IncorrectPasswordException e)
+    {
+        context.Response.StatusCode = 401;
         await context.Response.WriteAsync(e.Message);
     }
 });
