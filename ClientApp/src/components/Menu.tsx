@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, logInOutline, logInSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { addCircleOutline, addCircleSharp, logInOutline, logInSharp } from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -27,6 +27,12 @@ const appPages: AppPage[] = [
     url: "/login",
     iosIcon: logInOutline,
     mdIcon: logInSharp
+  },
+  {
+    title: "Új csoport létrehozása",
+    url: "/new-group",
+    iosIcon: addCircleOutline,
+    mdIcon: addCircleSharp
   }
 ];
 
