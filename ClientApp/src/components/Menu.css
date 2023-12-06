@@ -31,13 +31,6 @@ ion-menu.md ion-list#inbox-list ion-list-header {
   min-height: 20px;
 }
 
-ion-menu.md ion-list#labels-list ion-list-header {
-  font-size: 16px;
-  margin-bottom: 18px;
-  color: #757575;
-  min-height: 26px;
-}
-
 ion-menu.md ion-item {
   --padding-start: 10px;
   --padding-end: 10px;
@@ -96,10 +89,6 @@ ion-menu.ios ion-list-header,
 ion-menu.ios ion-note {
   padding-left: 16px;
   padding-right: 16px;
-}
-
-ion-menu.ios ion-note {
-  margin-bottom: 8px;
 }
 
 ion-note {
