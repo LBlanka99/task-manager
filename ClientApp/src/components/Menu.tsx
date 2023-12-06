@@ -24,12 +24,6 @@ interface AppPage {
 
 const appPagesWhenLoggedOut: AppPage[] = [
   {
-    title: "Bejelentkezés",
-    url: "/login",
-    iosIcon: logInOutline,
-    mdIcon: logInSharp
-  },
-  {
     title: "Új csoport létrehozása",
     url: "/new-group",
     iosIcon: addCircleOutline,
@@ -38,63 +32,76 @@ const appPagesWhenLoggedOut: AppPage[] = [
 ];
 
 const appPagesWhenLoggedIn: AppPage[] = [
-  {
-    title: "Kijelentkezés",
-    url: "/login",
-    iosIcon: logOutOutline,
-    mdIcon: logOutSharp
-  }
+  
 ]
 
-const getAuthCookie = () => {
-  const userCookie = document.cookie.split("; ").find(row => row.startsWith("id"));
-  return userCookie;
+interface MenuProps {
+  userCookie: string | undefined;
+  setUserCookie: (cookie: string | undefined) => void;
 }
 
-const getUserName = async (id: string) => {
-  const apiAddress = `http://localhost:5180/api/v1/users/${id}`;
-
-  const response = await fetch(apiAddress, {credentials: "include"});
-  const user = await response.json();
-  return user.userName;
-}
-
-const getGroupName = async (id: string) => {
-  const apiAddress = `http://localhost:5180/api/v1/groups/${id}`;
-
-  const response = await fetch(apiAddress, {credentials: "include"});
-  const group = await response.json();
-  return group.name;
-}
-
-const Menu: React.FC = () => {
+const Menu: React.FC<MenuProps> = ({userCookie, setUserCookie}) => {
   const location = useLocation();
-  const userCookie = getAuthCookie();
-  const isLoggedIn = userCookie !== undefined;
   const [userName, setUserName] = useState("");
   const [groupName, setGroupName] = useState("");
 
+  const getUserName = async (id: string) => {
+    const apiAddress = `http://localhost:5180/api/v1/users/${id}`;
+  
+    const response = await fetch(apiAddress, {credentials: "include"});
+    const user = await response.json();
+    return user.userName;
+  }
+  
+  const getGroupName = async (id: string) => {
+    const apiAddress = `http://localhost:5180/api/v1/groups/${id}`;
+  
+    const response = await fetch(apiAddress, {credentials: "include"});
+    const group = await response.json();
+    return group.name;
+  }
+
   useEffect(() => {
-    if (isLoggedIn) {
+    if (userCookie) {
       const id = userCookie.split("=")[1];
       getUserName(id).then(res => setUserName(res));
       getGroupName(id).then(res => setGroupName(res));
+    } else {
+      setUserName("");
+      setGroupName("");
     }
   }, [userCookie]);
 
-  
+  const handleLogout = async () => {
+    await fetch("http://localhost:5180/api/v1/users/log-out", {credentials: "include"});
+    setUserCookie(undefined);
+  }
 
-  const menuItems = isLoggedIn ? appPagesWhenLoggedIn : appPagesWhenLoggedOut;
+  const menuItems = userCookie ? appPagesWhenLoggedIn : appPagesWhenLoggedOut;
 
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent scrollY={false}>
         <IonList id="inbox-list">
-          <IonListHeader>{isLoggedIn ? groupName : "TenniVenni"}</IonListHeader>
-          {isLoggedIn && 
-            <IonNote>{userName}</IonNote>
+          <IonListHeader>{userCookie ? groupName : "TenniVenni"}</IonListHeader>           
+          <IonNote>{userName}</IonNote>          
+          <IonMenuToggle autoHide={false}>
+            {userCookie ?
+            <IonItem routerLink={"/login"} routerDirection="none" lines="none" detail={false} onClick={handleLogout}>
+              <IonIcon aria-hidden="true" slot="start" ios={logOutOutline} md={logOutSharp} />
+              <IonLabel>Kijelentkezés</IonLabel>
+            </IonItem>            
+            :
+            <IonItem className={location.pathname === "/login" ? 'selected' : ''} routerLink={"/login"} routerDirection="none" lines="none" detail={false}>
+              <IonIcon aria-hidden="true" slot="start" ios={logInOutline} md={logInSharp} />
+              <IonLabel>Bejelentkezés</IonLabel>
+            </IonItem>
+
           }
-          
+          </IonMenuToggle>          
+        </IonList>
+
+        <IonList id="inbox-list">
           {menuItems.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>

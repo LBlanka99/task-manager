@@ -2,7 +2,13 @@ import { IonContent, IonPage, IonInput, IonButton, IonAlert, IonRow, IonCol, Ion
 import React, { useState } from 'react';
 import './Login.css';
 
-const LoginPage: React.FC = () => {
+interface LoginPageProps {
+  setUserCookie: (cookie: string | undefined) => void;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
+
+  
   const [groupname, setGroupname] = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -28,8 +34,9 @@ const LoginPage: React.FC = () => {
 
     const response = await fetch(apiAddress, init);
     if (response.ok) {
-        //navigate to the group's page
+        setUserCookie(getAuthCookie());
         console.log("sikeres belépés");
+        //navigate to task's page
     } else if (response.status == 404) {
         setErrorMessage("Ilyen nevű csoport nem létezik!");
         setShowAlert(true);
@@ -39,6 +46,11 @@ const LoginPage: React.FC = () => {
     }
     
   };
+
+  const getAuthCookie = () => {
+    const userCookie = document.cookie.split("; ").find(row => row.startsWith("id"));
+    return userCookie;
+  }
 
   return (
     <IonPage>

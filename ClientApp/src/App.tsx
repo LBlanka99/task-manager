@@ -24,15 +24,18 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import LoginPage from './pages/Login';
 import NewGroupPage from './pages/NewGroup';
+import { useState } from 'react';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  const [userCookie, setUserCookie] = useState<string | undefined>(undefined);
+
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu />
+          <Menu userCookie={userCookie} setUserCookie={setUserCookie}/>
           <IonRouterOutlet id="main">
             <Route path="/" exact={true}>
               <Redirect to="/folder/Inbox" />
@@ -40,7 +43,9 @@ const App: React.FC = () => {
             <Route path="/folder/:name" exact={true}>
               <Page />
             </Route>
-            <Route path="/login" component={LoginPage} exact />
+            <Route path="/login" exact>
+              <LoginPage setUserCookie={setUserCookie} />
+            </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
           </IonRouterOutlet>
         </IonSplitPane>
