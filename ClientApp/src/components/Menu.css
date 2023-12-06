@@ -77,6 +77,10 @@ ion-menu.ios ion-item ion-icon {
   color: #73849a;
 }
 
+ion-menu.ios ion-list#inbox-list {
+  border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
+}
+
 ion-menu.ios ion-item .selected ion-icon {
   color: var(--ion-color-primary);
 }
