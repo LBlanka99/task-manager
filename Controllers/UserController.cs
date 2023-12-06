@@ -63,5 +63,13 @@ public class UserController : ControllerBase
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
     }
+
+    [HttpGet("{userId}")]
+    public async Task<UserModel> GetUserById(Guid userId)
+    {
+        return await _userService.FindEntityById<UserModel>(userId);
+    }
+
     
+
 }

@@ -11,8 +11,9 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { addCircleOutline, addCircleSharp, logInOutline, logInSharp } from 'ionicons/icons';
+import { addCircleOutline, addCircleSharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
 import './Menu.css';
+import { useEffect, useState } from 'react';
 
 interface AppPage {
   url: string;
@@ -21,7 +22,7 @@ interface AppPage {
   title: string;
 }
 
-const appPages: AppPage[] = [
+const appPagesWhenLoggedOut: AppPage[] = [
   {
     title: "Bejelentkezés",
     url: "/login",
@@ -36,16 +37,65 @@ const appPages: AppPage[] = [
   }
 ];
 
+const appPagesWhenLoggedIn: AppPage[] = [
+  {
+    title: "Kijelentkezés",
+    url: "/login",
+    iosIcon: logOutOutline,
+    mdIcon: logOutSharp
+  }
+]
+
+const getAuthCookie = () => {
+  const userCookie = document.cookie.split("; ").find(row => row.startsWith("id"));
+  return userCookie;
+}
+
+const getUserName = async (id: string) => {
+  const apiAddress = `http://localhost:5180/api/v1/users/${id}`;
+
+  const response = await fetch(apiAddress, {credentials: "include"});
+  const user = await response.json();
+  return user.userName;
+}
+
+const getGroupName = async (id: string) => {
+  const apiAddress = `http://localhost:5180/api/v1/groups/${id}`;
+
+  const response = await fetch(apiAddress, {credentials: "include"});
+  const group = await response.json();
+  return group.name;
+}
+
 const Menu: React.FC = () => {
   const location = useLocation();
+  const userCookie = getAuthCookie();
+  const isLoggedIn = userCookie !== undefined;
+  const [userName, setUserName] = useState("");
+  const [groupName, setGroupName] = useState("");
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const id = userCookie.split("=")[1];
+      getUserName(id).then(res => setUserName(res));
+      getGroupName(id).then(res => setGroupName(res));
+    }
+  }, [userCookie]);
+
+  
+
+  const menuItems = isLoggedIn ? appPagesWhenLoggedIn : appPagesWhenLoggedOut;
 
   return (
     <IonMenu contentId="main" type="overlay">
-      <IonContent>
+      <IonContent scrollY={false}>
         <IonList id="inbox-list">
-          <IonListHeader>TenniVenni</IonListHeader>
-          <IonNote>Belépve mint: </IonNote>
-          {appPages.map((appPage, index) => {
+          <IonListHeader>{isLoggedIn ? groupName : "TenniVenni"}</IonListHeader>
+          {isLoggedIn && 
+            <IonNote>{userName}</IonNote>
+          }
+          
+          {menuItems.map((appPage, index) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>

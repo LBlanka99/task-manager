@@ -51,4 +51,13 @@ public class GroupService : TaskManagerService, IGroupService
 
         return group;
     }
+
+    public async Task<GroupModel> GetGroupByUserId(Guid userId)
+    {
+        UserModel user = await FindEntityById<UserModel>(userId);
+        //How should I let Rider know that the group never can be null here???
+        GroupModel group = await _context.GroupModel.Include(g => g.Members).FirstOrDefaultAsync(g => g.Members.Contains(user));
+
+        return group!;
+    }
 }

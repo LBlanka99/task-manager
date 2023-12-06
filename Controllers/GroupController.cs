@@ -28,4 +28,10 @@ public class GroupController : ControllerBase
         }
         return await _groupService.CreateNewGroup(data);
     }
+    
+    [HttpGet("{userId}")]
+    public async Task<GroupModel> GetGroupByUserId(Guid userId)
+    {
+        return await _groupService.GetGroupByUserId(userId);
+    }
 }
