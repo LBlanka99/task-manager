@@ -30,14 +30,14 @@ namespace TaskManager.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 30, nullable: false),
                     Color = table.Column<string>(type: "TEXT", nullable: false),
-                    GroupId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    GroupModelId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TagModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TagModel_GroupModel_GroupId",
-                        column: x => x.GroupId,
+                        name: "FK_TagModel_GroupModel_GroupModelId",
+                        column: x => x.GroupModelId,
                         principalTable: "GroupModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -54,7 +54,7 @@ namespace TaskManager.Migrations
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Status = table.Column<int>(type: "INTEGER", nullable: false),
                     ConfirmingPhoto = table.Column<string>(type: "TEXT", nullable: true),
-                    GroupModelId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    GroupModelId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +63,8 @@ namespace TaskManager.Migrations
                         name: "FK_TaskModel_GroupModel_GroupModelId",
                         column: x => x.GroupModelId,
                         principalTable: "GroupModel",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,17 +76,18 @@ namespace TaskManager.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: true),
                     Password = table.Column<string>(type: "TEXT", nullable: false),
                     ProfilePicture = table.Column<string>(type: "TEXT", nullable: true),
-                    GroupId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    Roles = table.Column<string>(type: "TEXT", nullable: false)
+                    Roles = table.Column<string>(type: "TEXT", nullable: false),
+                    GroupModelId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserModel_GroupModel_GroupId",
-                        column: x => x.GroupId,
+                        name: "FK_UserModel_GroupModel_GroupModelId",
+                        column: x => x.GroupModelId,
                         principalTable: "GroupModel",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -137,9 +139,9 @@ namespace TaskManager.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TagModel_GroupId",
+                name: "IX_TagModel_GroupModelId",
                 table: "TagModel",
-                column: "GroupId");
+                column: "GroupModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TagModelTaskModel_TaskModelId",
@@ -157,9 +159,9 @@ namespace TaskManager.Migrations
                 column: "TaskModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserModel_GroupId",
+                name: "IX_UserModel_GroupModelId",
                 table: "UserModel",
-                column: "GroupId");
+                column: "GroupModelId");
         }
 
         /// <inheritdoc />

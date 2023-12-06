@@ -22,5 +22,20 @@ public class TaskManagerContext : DbContext
         modelBuilder.Entity<TaskModel>()
             .HasMany(t => t.Tags)
             .WithMany();
+
+        modelBuilder.Entity<GroupModel>()
+            .HasMany(g => g.Members)
+            .WithOne()
+            .IsRequired();
+        
+        modelBuilder.Entity<GroupModel>()
+            .HasMany(g => g.Tags)
+            .WithOne()
+            .IsRequired();
+        
+        modelBuilder.Entity<GroupModel>()
+            .HasMany(g => g.Tasks)
+            .WithOne()
+            .IsRequired();
     }
 }

@@ -14,5 +14,4 @@ public class TagModel
     public string Name { get; set; }
     [DefaultValue("#FA8072")]
     public string Color { get; set; }
-    public GroupModel Group { get; set; }
 }

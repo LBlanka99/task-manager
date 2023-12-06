@@ -58,7 +58,7 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("GroupId")
+                    b.Property<Guid>("GroupModelId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -68,7 +68,7 @@ namespace TaskManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupModelId");
 
                     b.ToTable("TagModel");
                 });
@@ -88,7 +88,7 @@ namespace TaskManager.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("GroupModelId")
+                    b.Property<Guid>("GroupModelId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Points")
@@ -117,7 +117,7 @@ namespace TaskManager.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("GroupId")
+                    b.Property<Guid>("GroupModelId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
@@ -138,7 +138,7 @@ namespace TaskManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupModelId");
 
                     b.ToTable("UserModel");
                 });
@@ -175,29 +175,29 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.Entities.Models.TagModel", b =>
                 {
-                    b.HasOne("TaskManager.Entities.Models.GroupModel", "Group")
+                    b.HasOne("TaskManager.Entities.Models.GroupModel", null)
                         .WithMany("Tags")
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("GroupModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("TaskManager.Entities.Models.TaskModel", b =>
                 {
                     b.HasOne("TaskManager.Entities.Models.GroupModel", null)
                         .WithMany("Tasks")
-                        .HasForeignKey("GroupModelId");
+                        .HasForeignKey("GroupModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TaskManager.Entities.Models.UserModel", b =>
                 {
-                    b.HasOne("TaskManager.Entities.Models.GroupModel", "Group")
+                    b.HasOne("TaskManager.Entities.Models.GroupModel", null)
                         .WithMany("Members")
-                        .HasForeignKey("GroupId");
-
-                    b.Navigation("Group");
+                        .HasForeignKey("GroupModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TaskModelUserModel", b =>
