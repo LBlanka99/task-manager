@@ -62,6 +62,7 @@ public class UserController : ControllerBase
     public async Task LogOutUser()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        Response.Cookies.Delete("id");
     }
 
     [HttpGet("{userId}")]
