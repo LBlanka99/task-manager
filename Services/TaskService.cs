@@ -26,4 +26,10 @@ public class TaskService : TaskManagerService, ITaskService
 
         return newTask;
     }
+    
+    public async Task<List<TaskModel>> GetTasksByGroupId(Guid groupId)
+    {
+        GroupModel group = await FindEntityById<GroupModel>(groupId, g => g.Tasks);
+        return group.Tasks;
+    }
 }

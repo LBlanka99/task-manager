@@ -23,4 +23,10 @@ public class TaskController : ControllerBase
     {
         return await _taskService.CreateNewTask(groupId, newTask);
     }
+    
+    [HttpGet("{groupId}")]
+    public async Task<List<TaskModel>> GetAllTasksForAGroup(Guid groupId)
+    {
+        return await _taskService.GetTasksByGroupId(groupId);
+    }
 }
