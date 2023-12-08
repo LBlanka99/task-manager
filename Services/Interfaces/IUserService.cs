@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using TaskManager.Entities.DTOs;
 using TaskManager.Entities.Models;
 
@@ -7,5 +8,5 @@ public interface IUserService
 {
     Task<UserModel> AddNewUserToGroup(NewUserDTO data);
     Task<UserModel> LogIn(LogInDTO credentials);
-    Task<T> FindEntityById<T>(Guid id) where T : class;
+    Task<T> FindEntityById<T>(Guid id, params Expression<Func<T, object>>[] includes) where T : class;
 }
