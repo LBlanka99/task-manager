@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager.Entities.DTOs;
 using TaskManager.Entities.Models;
 using TaskManager.Entities.Models.Context;
+using TaskManager.Exceptions;
 using TaskManager.Services.Base;
 using TaskManager.Services.Interfaces;
 
@@ -29,7 +30,13 @@ public class TaskService : TaskManagerService, ITaskService
     
     public async Task<List<TaskModel>> GetTasksByGroupId(Guid groupId)
     {
-        GroupModel group = await FindEntityById<GroupModel>(groupId, g => g.Tasks);
+        GroupModel? group = await _context.GroupModel.Include(g => g.Tasks).ThenInclude(t => t.Assignees)
+            .Include(g => g.Tasks).ThenInclude(t => t.Tags).FirstOrDefaultAsync(g => g.Id == groupId);
+        if (group is null)
+        {
+            throw new IdNotFoundException($"The group with the id {groupId} was not found.");
+        }
+        
         return group.Tasks;
     }
 }
