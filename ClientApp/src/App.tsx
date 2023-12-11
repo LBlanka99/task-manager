@@ -25,11 +25,13 @@ import './theme/variables.css';
 import LoginPage from './pages/Login';
 import NewGroupPage from './pages/NewGroup';
 import { useState } from 'react';
+import TaskListPage from './pages/TaskList';
+import { User } from './theme/interfaces';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [userCookie, setUserCookie] = useState<string | undefined>(undefined);
+  const [userCookie, setUserCookie] = useState<string | undefined>(document.cookie?.split("; ").find(row => row.startsWith("id")));
 
   return (
     <IonApp>
@@ -47,6 +49,9 @@ const App: React.FC = () => {
               <LoginPage setUserCookie={setUserCookie} />
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
+            <Route path="/tasks" exact>
+              <TaskListPage userCookie={userCookie!} />
+            </Route>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>

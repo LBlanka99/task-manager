@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { addCircleOutline, addCircleSharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
+import { addCircleOutline, addCircleSharp, copyOutline, copySharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
 import './Menu.css';
 import { useEffect, useState } from 'react';
 
@@ -32,6 +32,12 @@ const appPagesWhenLoggedOut: AppPage[] = [
 ];
 
 const appPagesWhenLoggedIn: AppPage[] = [
+  {
+    title: "Feladatok",
+    url: "/tasks",
+    iosIcon: copyOutline,
+    mdIcon: copySharp
+  }
   
 ]
 
