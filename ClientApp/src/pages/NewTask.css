@@ -1,0 +1,21 @@
+.date-grid {
+    margin: 0;
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+ion-item {
+    margin-bottom: 15px;
+}
+
+.first-col {
+    padding-left: 0;
+}
+
+.second-col {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding-right: 0;
+}

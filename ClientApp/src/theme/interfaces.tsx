@@ -24,3 +24,12 @@ export interface Task {
     status: Number;
     confirmingPhoto: string | null;
 }
+
+export interface Group {
+    id: string;
+    name: string;
+    members: User[];
+    tags: Tag[];
+    tasks: Task[];
+
+}

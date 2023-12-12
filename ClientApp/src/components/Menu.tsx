@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { addCircleOutline, addCircleSharp, copyOutline, copySharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
+import { addCircleOutline, addCircleSharp, copyOutline, copySharp, duplicateOutline, duplicateSharp, logInOutline, logInSharp, logOutOutline, logOutSharp } from 'ionicons/icons';
 import './Menu.css';
 import { useEffect, useState } from 'react';
 
@@ -37,6 +37,12 @@ const appPagesWhenLoggedIn: AppPage[] = [
     url: "/tasks",
     iosIcon: copyOutline,
     mdIcon: copySharp
+  },
+  {
+    title: "Új feladat létrehozása",
+    url: "/new-task",
+    iosIcon: duplicateOutline,
+    mdIcon: duplicateSharp
   }
   
 ]
