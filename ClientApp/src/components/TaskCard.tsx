@@ -7,7 +7,11 @@ interface TaskProps {
 }
 
 const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
-    const isDeadlineExpired = new Date(taskModel.deadline) < new Date();
+    const today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    const isDeadlineExpired = new Date(taskModel.deadline) < today;
     const isTaskCompleted = taskModel.status == 2;
 
     return (
