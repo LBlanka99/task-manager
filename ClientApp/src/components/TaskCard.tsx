@@ -15,7 +15,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
     const isTaskCompleted = taskModel.status == 2;
 
     return (
-        <IonCard>
+        <IonCard className="card">
             <IonCardHeader>
                 <IonCardTitle className="ion-text-center">{taskModel.title}</IonCardTitle>
             </IonCardHeader>
