@@ -24,14 +24,31 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import LoginPage from './pages/Login';
 import NewGroupPage from './pages/NewGroup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TaskListPage from './pages/TaskList';
 import { User } from './theme/interfaces';
+import NewTaskPage from './pages/NewTask';
 
 setupIonicReact();
 
 const App: React.FC = () => {
   const [userCookie, setUserCookie] = useState<string | undefined>(document.cookie?.split("; ").find(row => row.startsWith("id")));
+  const [currentUser, setCurrentUser] = useState();
+  const [currentGroup, setCurrentGroup] = useState();
+
+  useEffect(() => {
+    if (userCookie) {
+      const id = userCookie.split("=")[1];
+      console.log(id);
+      const groupApiAddress = `http://localhost:5180/api/v1/groups/${id}`;
+      fetch(groupApiAddress, {credentials: "include"}).then(res => res.json()).then(res => {setCurrentGroup(res);
+        console.log(res)});
+
+      const userApiAddress = `http://localhost:5180/api/v1/users/${id}`;
+      fetch(userApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentUser(res));
+    }
+    console.log(currentGroup);
+  }, [userCookie]);
 
   return (
     <IonApp>
@@ -51,6 +68,9 @@ const App: React.FC = () => {
             <Route path="/new-group" component={NewGroupPage} exact />
             <Route path="/tasks" exact>
               <TaskListPage userCookie={userCookie!} />
+            </Route>
+            <Route path="/new-task" exact>
+              <NewTaskPage group={currentGroup} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
