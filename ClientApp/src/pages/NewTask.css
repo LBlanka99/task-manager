@@ -7,6 +7,7 @@
 
 ion-item {
     margin-bottom: 15px;
+    padding-right: 14px;
 }
 
 .first-col {
@@ -19,3 +20,12 @@ ion-item {
     justify-content: end;
     padding-right: 0;
 }
+
+.new-task-form {
+    border: 2px solid #ccc;
+    padding-bottom: 14px;
+    padding-top: 14px;
+    max-width: 500px;
+    margin: auto;
+}
+

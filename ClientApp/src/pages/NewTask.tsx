@@ -1,7 +1,7 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonDatetime, IonDatetimeButton, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonModal, IonPage, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonDatetime, IonDatetimeButton, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonModal, IonPage, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import "./NewTask.css";
 import { useEffect, useRef, useState } from "react";
-import { Group, Tag, User } from "../theme/interfaces";
+import { Group, Tag, Task, User } from "../theme/interfaces";
 
 interface NewTaskPageProps {
     group: Group | undefined;
@@ -9,22 +9,56 @@ interface NewTaskPageProps {
 
 const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
     const [taskName, setTaskName] = useState("");
-    const [deadline, setDeadline] = useState<string | string[] >();
-    const [assignees, setAssignees] = useState<User[]>();
+    const [deadline, setDeadline] = useState<string | string[] >(new Date().toISOString().slice(0, 10));
+    const [assignees, setAssignees] = useState<User[]>([]);
     const [points, setPoints] = useState<number>();
     const [tags, setTags] = useState<Tag[]>();
     const [description, setDescription] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    console.log(group);
 
-    const createNewTask = () => {
-        //TODO: send request to server
+    const createNewTask = async (e: any) => {
+        e.preventDefault();
+
+        //TODO: a többi required inputra is csinálok ilyet, ha az automatikus validációt nem sikerül átállítani magyarra
+        if (assignees.length < 1) {
+            setErrorMessage("Legalább 1 felelőst ki kell jelölnöd a feladathoz!");
+            setShowAlert(true);
+            return;
+        }
+
+        const newTask = {
+            "title": taskName,
+            "deadline": deadline,
+            "assignees": assignees,
+            "points": points,
+            "tags": tags,
+            "description": description
+        }
+
+        const apiAddress = `http://localhost:5180/api/v1/tasks/${group?.id}/new-task`;
+
+        const init: RequestInit = {
+            method: "POST",
+            credentials: "include",
+            headers: new Headers([["content-type", "application/json"]]),
+            body: JSON.stringify(newTask),
+        };
+
+        const response = await fetch(apiAddress, init);
+        if (response.ok) {
+            //navigate to /tasks
+        } else {
+            setErrorMessage("Ismeretlen hiba lépett fel.");
+            setShowAlert(true);
+        }
     }
 
 
 
     return (
-        <IonPage>
+        <IonPage >
             
             <IonHeader>
                 <IonToolbar>
@@ -39,7 +73,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                 <IonText class="ion-text-center">
                     <h3 style={{marginBottom: "55px"}}>Itt tudsz új feladatot létrehozni:)</h3>
                 </IonText>
-                <form onSubmit={createNewTask}>
+                <form onSubmit={createNewTask} className="new-task-form ion-text-center">
                     <IonItem>
                     <IonInput
                         label="Feladat neve"
@@ -48,7 +82,8 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                         value={taskName}
                         clearInput
                         onIonInput={(i) => setTaskName(i.detail.value!)}
-                        required                                               
+                        required
+                        onInvalid={() => alert("Ez egy kötelező mező!")}                                            
                     />
                     </IonItem>
 
@@ -77,6 +112,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                         value={points}
                         clearInput
                         onIonInput={(i) => setPoints(Number(i.detail.value))}
+                        required                    
                     />
                     </IonItem>
 
@@ -100,7 +136,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                         cancelText="Mégsem"
                         max="2030-12-31"
                         min={new Date().toISOString()}
-                        onIonChange={e => setDeadline(e.detail.value!)}
+                        onIonChange={e => setDeadline(e.detail.value!.slice(0, 10))}
                     />
                     </IonModal>
 
@@ -132,9 +168,20 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                     />
                     </IonItem>
 
+                    
+                    <IonButton expand="full" type="submit" style={{paddingLeft: "14px", paddingRight: "14px"}}>
+                        Feladat létrehozása
+                    </IonButton>
                    
 
                 </form>
+                <IonAlert
+                    isOpen={showAlert}
+                    onDidDismiss={() => setShowAlert(false)}
+                    header={"Sikertelen feladatlétrehozás"}
+                    message={errorMessage}
+                    buttons={['OK']}
+                />
             </IonContent>
             :
             <div></div>

@@ -16,7 +16,11 @@ public class TaskService : TaskManagerService, ITaskService
 
     public async Task<TaskModel> CreateNewTask(Guid groupId, TaskModel newTask)
     {
-
+        if (newTask.Assignees.Count < 1)
+        {
+            throw new ArgumentException("There should be at least 1 assignee for the task!");
+        }
+        
         GroupModel group = await FindEntityById<GroupModel>(groupId, g => g.Tasks);
         group.Tasks.Add(newTask);
 
