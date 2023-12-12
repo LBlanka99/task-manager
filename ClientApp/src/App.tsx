@@ -39,15 +39,14 @@ const App: React.FC = () => {
   useEffect(() => {
     if (userCookie) {
       const id = userCookie.split("=")[1];
-      console.log(id);
+      
       const groupApiAddress = `http://localhost:5180/api/v1/groups/${id}`;
-      fetch(groupApiAddress, {credentials: "include"}).then(res => res.json()).then(res => {setCurrentGroup(res);
-        console.log(res)});
+      fetch(groupApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentGroup(res));
 
       const userApiAddress = `http://localhost:5180/api/v1/users/${id}`;
       fetch(userApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentUser(res));
     }
-    console.log(currentGroup);
+    
   }, [userCookie]);
 
   return (

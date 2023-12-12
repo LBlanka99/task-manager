@@ -25,7 +25,6 @@ const TaskListPage: React.FC<TaskListPageProps> = ({userCookie}) => {
 
     //kb ugyanez van a Menu.tsx-ben is, lehet hogy a groupot le lehetne kérni már az app.tsx-ben?
     const getGroupId = async () => {
-        console.log(userCookie);
         const id = userCookie.split("=")[1];
         const apiAddress = `http://localhost:5180/api/v1/groups/${id}`;
         const response = await fetch(apiAddress, {credentials: "include"});
