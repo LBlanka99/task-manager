@@ -1,8 +1,9 @@
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import { IonButtons, IonContent, IonFab, IonFabButton, IonHeader, IonIcon, IonMenuButton, IonPage, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import "./TaskList.css";
 import { useEffect, useState } from "react";
 import { Task } from "../theme/interfaces";
 import TaskCard from "../components/TaskCard";
+import { add } from "ionicons/icons";
 
 interface TaskListPageProps {
     userCookie: string;
@@ -50,6 +51,11 @@ const TaskListPage: React.FC<TaskListPageProps> = ({userCookie}) => {
                 :
                 <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>
                 }
+                <IonFab slot="fixed" vertical="bottom" horizontal="end" class="ion-margin">
+                    <IonFabButton aria-label="new-task" color={"primary"} routerLink="/new-task" routerDirection="forward">
+                        <IonIcon icon={add}></IonIcon>
+                    </IonFabButton>
+                </IonFab>
             </IonContent>
         </IonPage>
     );
