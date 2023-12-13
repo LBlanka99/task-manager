@@ -28,6 +28,7 @@ import { useEffect, useState } from 'react';
 import TaskListPage from './pages/TaskList';
 import { User } from './theme/interfaces';
 import NewTaskPage from './pages/NewTask';
+import TagListPage from './pages/TagList';
 
 setupIonicReact();
 
@@ -70,6 +71,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/new-task" exact>
               <NewTaskPage group={currentGroup} />
+            </Route>
+            <Route path="/tags" exact>
+              <TagListPage group={currentGroup} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
