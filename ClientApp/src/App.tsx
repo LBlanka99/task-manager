@@ -67,7 +67,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
             <Route path="/tasks" exact>
-              <TaskListPage userCookie={userCookie!} />
+              <TaskListPage group={currentGroup} />
             </Route>
             <Route path="/new-task" exact>
               <NewTaskPage group={currentGroup} />

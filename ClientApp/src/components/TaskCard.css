@@ -2,12 +2,12 @@
     color: var(--ion-color-danger-shade);
 }
 
-ion-chip {
+ion-card ion-chip {
     color:rgb(10, 1, 1);
     background-color: aquamarine;
 }
 
-ion-chip:hover {
+ion-card ion-chip:hover {
     cursor: default;
 }
 

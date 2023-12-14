@@ -23,6 +23,7 @@ export interface Task {
     description: string | null;
     status: Number;
     confirmingPhoto: string | null;
+    [key: string]: any;
 }
 
 export interface Group {
