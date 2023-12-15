@@ -43,4 +43,13 @@ public class TaskService : TaskManagerService, ITaskService
         
         return group.Tasks;
     }
+
+    public async Task DeleteTask(Guid taskId)
+    {
+        TaskModel task = await FindEntityById<TaskModel>(taskId);
+
+        _context.Entry(task).State = EntityState.Deleted;
+
+        await _context.SaveChangesAsync();
+    }
 }

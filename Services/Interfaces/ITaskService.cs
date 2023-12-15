@@ -7,4 +7,5 @@ public interface ITaskService
 {
     Task<TaskModel> CreateNewTask(Guid groupId, TaskModel newTask);
     Task<List<TaskModel>> GetTasksByGroupId(Guid groupId);
+    Task DeleteTask(Guid taskId);
 }

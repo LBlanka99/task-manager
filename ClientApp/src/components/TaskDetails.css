@@ -5,8 +5,24 @@
     background-color: #f0f0f0;
     border-radius: 8px;
     word-wrap: break-word;
-  }
+}
 
-.item-inner-full  {
+.item-inner-full {
     --inner-padding-end: 0px;
+}
+
+.edit-button {
+    font-size: 21px;
+}
+
+.done-button {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+@media (min-width: 450px) {
+    .edit-buttons-container {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 }

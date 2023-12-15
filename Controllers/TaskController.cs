@@ -29,4 +29,10 @@ public class TaskController : ControllerBase
     {
         return await _taskService.GetTasksByGroupId(groupId);
     }
+
+    [HttpDelete("{taskId}")]
+    public async Task DeleteTask(Guid taskId)
+    {
+        await _taskService.DeleteTask(taskId);
+    }
 }
