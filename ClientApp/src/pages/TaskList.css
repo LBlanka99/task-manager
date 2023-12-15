@@ -6,7 +6,7 @@
 ion-item ion-chip {
     background-color: var(--ion-color-primary);
     color: var(--ion-color-light);
-    max-height: 35px;
+    height: 35px;
 }
 
 ion-item ion-chip ion-button ion-icon:hover {
@@ -18,10 +18,47 @@ ion-item ion-chip ion-button ion-icon:active {
 }
 
 ion-item ion-chip:hover {
-    background-color: var(--ion-color-primary-tint);
-    cursor: default;
+    background-color: var(--ion-color-primary-tint);    
 }
 
 ion-chip ion-select::part(icon) {
     color: var(--ion-color-light);
+}
+
+ion-menu ion-checkbox {
+    size: 32px;
+}
+
+ion-menu ion-checkbox::part(container) {
+    border-radius: 6px;
+}
+
+.date-filter-col {
+    padding-left: 0px;
+    max-width: fit-content;
+}
+
+.filter-header {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+ion-menu.ios ion-item ion-icon {
+    color: var(--ion-color-light);
+}
+
+ion-menu.md ion-item ion-icon {
+    color: var(--ion-color-light);
+}
+
+ion-menu.md ion-item {
+    border-radius: 0px;
+}
+
+.md div[slot="content"] {
+    background: #4c6083;
+}
+
+.md ion-accordion ion-item {
+    --ion-item-background: #4c6083;
 }

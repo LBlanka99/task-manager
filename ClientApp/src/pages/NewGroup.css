@@ -22,7 +22,7 @@ ion-content {
     height: 100%;
 }
    
-ion-input {
+form ion-input {
     margin-bottom: 10px;
     offset: 0px;
   }
