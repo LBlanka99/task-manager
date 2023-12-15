@@ -1,6 +1,7 @@
-import { IonAvatar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonChip, IonCol, IonGrid, IonLabel, IonRow } from "@ionic/react";
-import { Task } from "../theme/interfaces";
+import { IonAvatar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonChip, IonCol, IonGrid, IonLabel, IonNavLink, IonRow } from "@ionic/react";
+import { Task, User } from "../theme/interfaces";
 import "./TaskCard.css";
+import TaskDetails from "./TaskDetails";
 
 interface TaskProps {
     taskModel: Task
@@ -15,7 +16,8 @@ const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
     const isTaskCompleted = taskModel.status == 2;
 
     return (
-        <IonCard className="card">
+        <IonNavLink routerDirection="forward" component={() => <TaskDetails task={taskModel} />}>
+        <IonCard className="card" button>
             <IonCardHeader>
                 <IonCardTitle className="ion-text-center">{taskModel.title}</IonCardTitle>
             </IonCardHeader>
@@ -23,7 +25,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
             <IonCardContent style={{padding: "0px"}}>
                 <IonGrid>
                 <IonRow className="ion-align-items-start ion-justify-content-end">
-                    <IonCol className="ion-text-right">
+                    <IonCol className="ion-text-left">
                     {taskModel.tags.map((tag, index) => (
                         <IonChip key={index} style={{ backgroundColor: tag.color }}>
                         {tag.name}
@@ -55,6 +57,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
                 </IonGrid>
             </IonCardContent>
         </IonCard>
+        </IonNavLink>
     );
 };
 

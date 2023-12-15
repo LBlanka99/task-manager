@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonNav, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
@@ -29,6 +29,7 @@ import TaskListPage from './pages/TaskList';
 import { User } from './theme/interfaces';
 import NewTaskPage from './pages/NewTask';
 import TagListPage from './pages/TagList';
+import TaskNav from './components/TaskNav';
 
 setupIonicReact();
 
@@ -67,7 +68,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
             <Route path="/tasks" exact>
-              <TaskListPage group={currentGroup} />
+              <TaskNav group={currentGroup} />
             </Route>
             <Route path="/new-task" exact>
               <NewTaskPage group={currentGroup} />
