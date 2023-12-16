@@ -1,10 +1,14 @@
 /* Add these styles to your CSS stylesheet */
 .description {
-    margin-top: 8px;
-    padding: 8px;
-    background-color: #f0f0f0;
+    background-color: var(--ion-color-light);
     border-radius: 8px;
     word-wrap: break-word;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.sc-ion-textarea-md-h {
+    --padding-top: 10px;
 }
 
 .item-inner-full {
@@ -25,4 +29,18 @@
         padding-left: 16px;
         padding-right: 16px;
     }
+}
+
+
+.legacy-input.sc-ion-input-ios-h .input-clear-icon.sc-ion-input-ios {    
+    margin-bottom: 2.1px;    
+}
+
+.legacy-input.sc-ion-input-md-h .input-clear-icon.sc-ion-input-md {
+    margin-left: 8px;
+    margin-bottom: 1.5px;
+}
+
+.no-button:hover {
+    cursor: default;
 }

@@ -7,9 +7,6 @@ ion-card ion-chip {
     background-color: aquamarine;
 }
 
-ion-card ion-chip:hover {
-    cursor: default;
-}
 
 .assignee-row {
     display: flex;

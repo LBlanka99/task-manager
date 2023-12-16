@@ -18,10 +18,10 @@ export interface Task {
     title: string;
     deadline: Date;
     assignees: User[];
-    points: Number;
+    points: number;
     tags: Tag[];
     description: string | null;
-    status: Number;
+    status: number;
     confirmingPhoto: string | null;
     [key: string]: any;
 }
