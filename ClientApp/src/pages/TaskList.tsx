@@ -52,7 +52,11 @@ const TaskListPage: React.FC<TaskListPageProps> = ({group}) => {
     useEffect(() => {
         if (sortBy) {
             const direction = isAscending ? 1 : -1;
-            displayTasks.sort((a, b) => (a[sortBy] > b[sortBy]) ? 1*direction : -1*direction);
+            if (sortBy == "title") {
+                displayTasks.sort((a, b) => (a[sortBy].toLocaleLowerCase() > b[sortBy].toLocaleLowerCase()) ? 1*direction : -1*direction);
+            } else {
+                displayTasks.sort((a, b) => (a[sortBy] > b[sortBy]) ? 1*direction : -1*direction);
+            }            
             setAllTasks([...allTasks]);
         }
 
