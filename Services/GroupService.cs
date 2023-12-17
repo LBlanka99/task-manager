@@ -34,7 +34,7 @@ public class GroupService : TaskManagerService, IGroupService
         {
             UserName = data.UserName,
             Password = data.Password,
-            Roles = new List<string> { "admin, taskCreator" }
+            Roles = new List<string> { "admin", "taskCreator" }
         };
         
         var hashedPassword = _hasher.HashPassword(user, user.Password);
