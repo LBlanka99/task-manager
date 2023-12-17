@@ -30,7 +30,7 @@ public class TagController : ControllerBase
     }
 
     [HttpPut("{tagId}")]
-    public async Task<TagModel> PutTag(Guid tagId, TagModel modifiedTag)
+    public async Task<TagModel> PutTag(Guid tagId, [FromBody] TagModel modifiedTag)
     {
         return await _tagService.UpdateTag(tagId, modifiedTag);
     }
