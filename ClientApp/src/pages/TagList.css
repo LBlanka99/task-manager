@@ -4,7 +4,7 @@ ion-chip ion-button {
     margin-left: 12px;
 }
 
-.tag-modal {
+.modal {
     --height: 30%;
     --border-radius: 16px;
     --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -15,12 +15,12 @@ ion-chip ion-button {
     justify-content: center;
 }
 
-.tag-modal::part(backdrop) {
-    background: rgba(209, 213, 219);
+.modal::part(backdrop) {
+    background: rgb(148, 165, 189);
     opacity: 1;
 }
 
-.tag-modal form {
+.modal form {
     max-width: 500px;
     margin: auto;
     margin-top: 30px;

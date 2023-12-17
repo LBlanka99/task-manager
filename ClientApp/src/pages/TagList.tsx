@@ -127,7 +127,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
                     </IonFab>
 
                     
-                    <IonModal className="tag-modal" id="new-tag-modal" trigger="open-new-tag-dialog" ref={createModal}>
+                    <IonModal className="modal" id="new-tag-modal" trigger="open-new-tag-dialog" ref={createModal}>
                         <IonContent scrollY={false}>
                             <IonToolbar>
                                 <IonButtons slot="start">
@@ -167,7 +167,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
                         </IonContent>
                     </IonModal>
 
-                    <IonModal className="tag-modal" id="update-tag-modal" isOpen={editingTag != null}>
+                    <IonModal className="modal" id="update-tag-modal" isOpen={editingTag != null} backdropDismiss onDidDismiss={() => setEditingTag(null)}>
                         <IonContent scrollY={false}>
                             <IonToolbar>
                                 <IonButtons slot="start">
@@ -175,7 +175,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
                                     Mégsem
                                     </IonButton>
                                 </IonButtons>
-                                <IonTitle>Szerkesztés</IonTitle>
+                                <IonTitle class="ion-text-center">Szerkesztés</IonTitle>
                                 <IonButtons slot="end">
                                     <IonButton color="primary" type="submit" form="update-tag-form">
                                     Mentés
