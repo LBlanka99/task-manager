@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TaskManager.Entities.DTOs;
 using TaskManager.Entities.Models;
 using TaskManager.Services.Interfaces;
+using TaskStatus = TaskManager.Entities.Enums.TaskStatus;
 
 namespace TaskManager.Controllers;
 
@@ -34,5 +35,17 @@ public class TaskController : ControllerBase
     public async Task DeleteTask(Guid taskId)
     {
         await _taskService.DeleteTask(taskId);
+    }
+
+    [HttpPut("{taskId}")]
+    public async Task<TaskModel> PutTask(Guid taskId, [FromBody] TaskModel updatedTask)
+    {
+        return await _taskService.UpdateTask(taskId, updatedTask);
+    }
+
+    [HttpPatch("{taskId}/status-change")]
+    public async Task<TaskModel> PatchStatusOfTask(Guid taskId, [FromBody] TaskStatus status)
+    {
+        return await _taskService.ChangeStatusOfTask(taskId, status);
     }
 }

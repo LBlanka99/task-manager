@@ -5,6 +5,7 @@ using TaskManager.Entities.Models.Context;
 using TaskManager.Exceptions;
 using TaskManager.Services.Base;
 using TaskManager.Services.Interfaces;
+using TaskStatus = TaskManager.Entities.Enums.TaskStatus;
 
 namespace TaskManager.Services;
 
@@ -51,5 +52,38 @@ public class TaskService : TaskManagerService, ITaskService
         _context.Entry(task).State = EntityState.Deleted;
 
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<TaskModel> UpdateTask(Guid taskId, TaskModel updatedTask)
+    {
+        TaskModel task = await FindEntityById<TaskModel>(taskId, g => g.Assignees, g => g.Tags);
+
+        task.Title = updatedTask.Title;
+        task.Deadline = updatedTask.Deadline;
+        task.Assignees = updatedTask.Assignees;
+        task.Points = updatedTask.Points;
+        task.Tags = updatedTask.Tags;
+        task.Description = updatedTask.Description;
+        
+        //remélem itt frissíti a usereket/tageket is....
+
+        _context.Entry(task).State = EntityState.Modified;
+
+        await _context.SaveChangesAsync();
+
+        return task;
+    }
+
+    public async Task<TaskModel> ChangeStatusOfTask(Guid taskId, TaskStatus status)
+    {
+        TaskModel task = await FindEntityById<TaskModel>(taskId);
+
+        task.Status = status;
+
+        _context.Entry(task).State = EntityState.Modified;
+
+        await _context.SaveChangesAsync();
+
+        return task;
     }
 }
