@@ -106,12 +106,12 @@ const Menu: React.FC<MenuProps> = ({userCookie, setUserCookie}) => {
           <IonMenuToggle autoHide={false}>
             {userCookie ?
             <IonItem routerLink={"/login"} routerDirection="none" lines="none" detail={false} onClick={handleLogout}>
-              <IonIcon aria-hidden="true" slot="start" ios={logOutOutline} md={logOutSharp} />
+              <IonIcon color="primary" aria-hidden="true" slot="start" ios={logOutOutline} md={logOutSharp} />
               <IonLabel>Kijelentkezés</IonLabel>
             </IonItem>            
             :
             <IonItem className={location.pathname === "/login" ? 'selected' : ''} routerLink={"/login"} routerDirection="none" lines="none" detail={false}>
-              <IonIcon aria-hidden="true" slot="start" ios={logInOutline} md={logInSharp} />
+              <IonIcon color="primary" aria-hidden="true" slot="start" ios={logInOutline} md={logInSharp} />
               <IonLabel>Bejelentkezés</IonLabel>
             </IonItem>
 
@@ -124,7 +124,7 @@ const Menu: React.FC<MenuProps> = ({userCookie, setUserCookie}) => {
             return (
               <IonMenuToggle key={index} autoHide={false}>
                 <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                  <IonIcon color="primary" aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
