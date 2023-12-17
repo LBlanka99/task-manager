@@ -4,10 +4,11 @@ import "./TaskCard.css";
 import TaskDetails from "./TaskDetails";
 
 interface TaskProps {
-    taskModel: Task
+    taskModel: Task,
+    currentUser: User
 }
 
-const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
+const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
     const today = new Date();
     today.setHours(0);
     today.setMinutes(0);
@@ -16,7 +17,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel}) => {
     const isTaskCompleted = taskModel.status == 2;
 
     return (
-        <IonNavLink routerDirection="forward" component={() => <TaskDetails task={taskModel} />}>
+        <IonNavLink routerDirection="forward" component={() => <TaskDetails task={taskModel} currentUser={currentUser} />}>
         <IonCard className="card" button>
             <IonCardHeader>
                 <IonCardTitle className="ion-text-center">{taskModel.title}</IonCardTitle>

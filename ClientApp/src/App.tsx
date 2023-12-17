@@ -68,7 +68,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
             <Route path="/tasks" exact>
-              <TaskNav group={currentGroup} />
+              <TaskNav group={currentGroup} currentUser={currentUser}/>
             </Route>
             <Route path="/new-task" exact>
               <NewTaskPage group={currentGroup} />

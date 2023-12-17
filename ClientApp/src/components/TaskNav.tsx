@@ -1,14 +1,17 @@
 import { IonNav } from "@ionic/react"
 import TaskListPage from "../pages/TaskList"
-import { Group } from "../theme/interfaces";
+import { Group, User } from "../theme/interfaces";
 
 interface TaskNavProps {
     group: Group | undefined;
+    currentUser: User | undefined;
 }
 
-const TaskNav:React.FC<TaskNavProps> = ({group}) => {
+const TaskNav: React.FC<TaskNavProps> = ({ group, currentUser }) => {
 
-    return <IonNav root={() => <TaskListPage group={group} />}></IonNav>;
+    return (
+        <IonNav root={() => <TaskListPage group={group} currentUser={currentUser} />}></IonNav>
+    )
 };
 
 export default TaskNav;

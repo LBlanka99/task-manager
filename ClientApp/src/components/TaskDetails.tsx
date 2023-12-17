@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 import { calendar, person, pricetag, informationCircle, calendarOutline, calendarSharp, personOutline, personSharp, trophyOutline, trophySharp, pricetagOutline, pricetagSharp, hourglassOutline, hourglassSharp, informationCircleOutline, trashOutline, trashSharp, pencilOutline, pencilSharp, checkmarkCircleOutline, checkmarkCircleSharp, checkmarkOutline, checkmarkSharp, happyOutline, happySharp, arrowUndoOutline, arrowUndoSharp, saveOutline, saveSharp, closeCircleOutline, closeSharp, closeCircleSharp, addOutline, addSharp } from "ionicons/icons";
 
 interface TaskDetailsProps {
-    task: Task
+    task: Task,
+    currentUser: User
 }
 
-const TaskDetails: React.FC<TaskDetailsProps> = ({ task }) => {
+const TaskDetails: React.FC<TaskDetailsProps> = ({ task, currentUser }) => {
     const [taskStatusText, setTaskStatusText] = useState("");
     const [showAlert, setShowAlert] = useState(false);
     const [isEditing, setIsEditing] = useState(false);

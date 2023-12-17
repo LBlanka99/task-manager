@@ -8,9 +8,10 @@ import { menuController } from '@ionic/core/components';
 
 interface TaskListPageProps {
     group: Group | undefined;
+    currentUser: User | undefined;
 }
 
-const TaskListPage: React.FC<TaskListPageProps> = ({group}) => {
+const TaskListPage: React.FC<TaskListPageProps> = ({group, currentUser}) => {
     const [allTasks, setAllTasks] = useState<Task[]>([]);
     const [displayTasks, setDisplayTasks] = useState<Task[]>(allTasks);
     const [isAscending, setIsAscending] = useState(true);
@@ -311,7 +312,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({group}) => {
                     <IonTitle>Feladatok</IonTitle>
                 </IonToolbar>               
             </IonHeader>
-            {group ?
+            {group &&
             <>
             
             <IonItem lines="full">
@@ -345,7 +346,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({group}) => {
 
             <IonContent>
                 {displayTasks.length > 0 ? displayTasks.map((task, index) => (
-                    <TaskCard key={index} taskModel={task}></TaskCard>
+                    <TaskCard key={index} taskModel={task} currentUser={currentUser!}></TaskCard>
                 ))
                 :
                 <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>
@@ -357,8 +358,6 @@ const TaskListPage: React.FC<TaskListPageProps> = ({group}) => {
                 </IonFab>
             </IonContent>
             </>
-            :
-            <div></div>
             }
         </IonPage>
         </>
