@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Options;
 
 namespace TaskManager.Entities.Models.Context;
 
@@ -38,4 +40,15 @@ public class TaskManagerContext : DbContext
             .WithOne()
             .IsRequired();
     }
+    
+    //Enabling split queries globally to work around performance issues
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .UseSqlite("Data Source=task-manager-database.db",
+                o => o.UseQuerySplittingBehavior((QuerySplittingBehavior.SplitQuery)));
+    }
+
+
+ 
 }
