@@ -60,4 +60,16 @@ public class GroupService : TaskManagerService, IGroupService
 
         return group!;
     }
+    
+    public async Task<List<TaskModel>> GetAllTasksInAGroup(Guid groupId)
+    {
+        GroupModel? group = await _context.GroupModel.Include(g => g.Tasks).ThenInclude(t => t.Assignees)
+            .Include(g => g.Tasks).ThenInclude(t => t.Tags).FirstOrDefaultAsync(g => g.Id == groupId);
+        if (group is null)
+        {
+            throw new IdNotFoundException($"The group with the id {groupId} was not found.");
+        }
+        
+        return group.Tasks;
+    }
 }

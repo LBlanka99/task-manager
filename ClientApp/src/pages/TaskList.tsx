@@ -35,7 +35,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({group, currentUser}) => {
     }, [isAscending]);
 
     const fetchTasks = async () => {
-        const apiAddress = `http://localhost:5180/api/v1/tasks/${group?.id}`;
+        const apiAddress = `http://localhost:5180/api/v1/groups/all-tasks/${group?.id}`;
 
         const response = await fetch(apiAddress, {credentials: "include"});
         return await response.json();
