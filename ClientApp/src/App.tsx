@@ -29,7 +29,7 @@ import TaskListPage from './pages/TaskList';
 import { User } from './theme/interfaces';
 import NewTaskPage from './pages/NewTask';
 import TagListPage from './pages/TagList';
-import TaskNav from './components/TaskNav';
+import TaskDetails from './components/TaskDetails';
 
 setupIonicReact();
 
@@ -57,24 +57,24 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu userCookie={userCookie} setUserCookie={setUserCookie}/>
           <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/folder/Inbox" />
-            </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page />
+            <Route path="/" exact>
+              <Redirect to="/login" />
             </Route>
             <Route path="/login" exact>
               <LoginPage setUserCookie={setUserCookie} />
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
             <Route path="/tasks" exact>
-              <TaskNav group={currentGroup} currentUser={currentUser}/>
+              <TaskListPage group={currentGroup} currentUser={currentUser} />
             </Route>
             <Route path="/new-task" exact>
               <NewTaskPage group={currentGroup} />
             </Route>
             <Route path="/tags" exact>
               <TagListPage group={currentGroup} />
+            </Route>
+            <Route path="/tasks/:taskId">
+              <TaskDetails currentUser={currentUser} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

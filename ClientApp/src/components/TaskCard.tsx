@@ -1,4 +1,4 @@
-import { IonAvatar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonChip, IonCol, IonGrid, IonLabel, IonNavLink, IonRow } from "@ionic/react";
+import { IonAvatar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonChip, IonCol, IonGrid, IonLabel, IonNavLink, IonRouterLink, IonRow } from "@ionic/react";
 import { Task, User } from "../theme/interfaces";
 import "./TaskCard.css";
 import TaskDetails from "./TaskDetails";
@@ -16,9 +16,11 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
     const isDeadlineExpired = new Date(taskModel.deadline) < today;
     const isTaskCompleted = taskModel.status == 2;
 
+    const detailsUrl = `/tasks/${taskModel.id}`;
+
     return (
-        <IonNavLink routerDirection="forward" component={() => <TaskDetails task={taskModel} currentUser={currentUser} />}>
-        <IonCard className="card" button>
+        <IonRouterLink routerDirection="forward" routerLink={detailsUrl}>
+        <IonCard  className="card" button >
             <IonCardHeader>
                 <IonCardTitle className="ion-text-center">{taskModel.title}</IonCardTitle>
             </IonCardHeader>
@@ -58,7 +60,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
                 </IonGrid>
             </IonCardContent>
         </IonCard>
-        </IonNavLink>
+        </IonRouterLink>
     );
 };
 
