@@ -32,8 +32,8 @@
 }
 
 
-.legacy-input.sc-ion-input-ios-h .input-clear-icon.sc-ion-input-ios {    
-    margin-bottom: 2.1px;    
+.legacy-input.sc-ion-input-ios-h .input-clear-icon.sc-ion-input-ios {
+    margin-bottom: 2.1px;
 }
 
 .legacy-input.sc-ion-input-md-h .input-clear-icon.sc-ion-input-md {
@@ -43,4 +43,12 @@
 
 .no-button:hover {
     cursor: default;
+}
+
+ion-modal.add-new-modal {
+    --height: 40%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    padding-left: 16px;
+    padding-right: 16px;
 }

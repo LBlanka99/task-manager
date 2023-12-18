@@ -33,16 +33,11 @@ public class TaskService : TaskManagerService, ITaskService
         return newTask;
     }
     
-    public async Task<List<TaskModel>> GetTasksByGroupId(Guid groupId)
+    public async Task<TaskModel> GetTaskById(Guid taskId)
     {
-        GroupModel? group = await _context.GroupModel.Include(g => g.Tasks).ThenInclude(t => t.Assignees)
-            .Include(g => g.Tasks).ThenInclude(t => t.Tags).FirstOrDefaultAsync(g => g.Id == groupId);
-        if (group is null)
-        {
-            throw new IdNotFoundException($"The group with the id {groupId} was not found.");
-        }
-        
-        return group.Tasks;
+        TaskModel task = await FindEntityById<TaskModel>(taskId, t => t.Assignees, t => t.Tags);
+
+        return task;
     }
 
     public async Task DeleteTask(Guid taskId)
@@ -56,18 +51,36 @@ public class TaskService : TaskManagerService, ITaskService
 
     public async Task<TaskModel> UpdateTask(Guid taskId, TaskModel updatedTask)
     {
-        TaskModel task = await FindEntityById<TaskModel>(taskId, g => g.Assignees, g => g.Tags);
+        TaskModel task = await FindEntityById<TaskModel>(taskId, t => t.Assignees, t => t.Tags);
 
         task.Title = updatedTask.Title;
         task.Deadline = updatedTask.Deadline;
-        task.Assignees = updatedTask.Assignees;
         task.Points = updatedTask.Points;
-        task.Tags = updatedTask.Tags;
         task.Description = updatedTask.Description;
         
-        //remélem itt frissíti a usereket/tageket is....
+        // Update Assignees
+        task.Assignees.Clear(); // Remove existing relationships
+        await _context.SaveChangesAsync();
+        foreach (var assignee in updatedTask.Assignees)
+        {
+            var existingAssignee = await _context.UserModel.FindAsync(assignee.Id);
+            if (existingAssignee != null)
+            {
+                task.Assignees.Add(existingAssignee);
+            }
+        }
 
-        _context.Entry(task).State = EntityState.Modified;
+        // Update Tags
+        task.Tags.Clear(); // Remove existing relationships
+        await _context.SaveChangesAsync();
+        foreach (var tag in updatedTask.Tags)
+        {
+            var existingTag = await _context.TagModel.FindAsync(tag.Id);
+            if (existingTag != null)
+            {
+                task.Tags.Add(existingTag);
+            }
+        }
 
         await _context.SaveChangesAsync();
 
@@ -76,7 +89,7 @@ public class TaskService : TaskManagerService, ITaskService
 
     public async Task<TaskModel> ChangeStatusOfTask(Guid taskId, TaskStatus status)
     {
-        TaskModel task = await FindEntityById<TaskModel>(taskId);
+        TaskModel task = await FindEntityById<TaskModel>(taskId, t => t.Assignees, t => t.Tags);
 
         task.Status = status;
 

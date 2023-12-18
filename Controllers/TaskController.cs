@@ -25,10 +25,10 @@ public class TaskController : ControllerBase
         return await _taskService.CreateNewTask(groupId, newTask);
     }
     
-    [HttpGet("{groupId}")]
-    public async Task<List<TaskModel>> GetAllTasksForAGroup(Guid groupId)
+    [HttpGet("{taskId}")]
+    public async Task<TaskModel> GetTaskById(Guid taskId)
     {
-        return await _taskService.GetTasksByGroupId(groupId);
+        return await _taskService.GetTaskById(taskId);
     }
 
     [HttpDelete("{taskId}")]
