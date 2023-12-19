@@ -1,3 +1,4 @@
+using System.Drawing;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TaskManager.Entities.DTOs;
@@ -13,11 +14,13 @@ public class UserService : TaskManagerService, IUserService
 {
     private readonly IGroupService _groupService;
     private readonly IPasswordHasher<UserModel> _hasher;
+    private readonly Random _random;
 
     public UserService(TaskManagerContext context, IGroupService groupService) : base(context)
     {
         _groupService = groupService;
         _hasher = new PasswordHasher<UserModel>();
+        _random = new Random();
     }
 
     public async Task<UserModel> AddNewUserToGroup(NewUserDTO data)
@@ -39,13 +42,16 @@ public class UserService : TaskManagerService, IUserService
         {
             roles.Add("taskCreator");
         }
+        
+        string randomColor = $"#{_random.Next(256):X2}{_random.Next(256):X2}{_random.Next(256):X2}";
 
         var user = new UserModel
         {
             UserName = data.UserName,
             Password = data.Password,
             Roles = roles,
-            Email = data.Email
+            Email = data.Email,
+            ProfilColor = randomColor
         };
 
         var hashedPassword = _hasher.HashPassword(user, user.Password);

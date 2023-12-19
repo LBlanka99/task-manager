@@ -168,21 +168,38 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
         setNewTags([...newTags]);
     };
 
-    const handleDone = async () => {
+    const changeTaskStatus = async (statusNumber: Number) => {
         const apiAddress = `http://localhost:5180/api/v1/tasks/${task?.id}/status-change`;
 
         const init: RequestInit = {
             method: "PATCH",
             credentials: "include",
             headers: new Headers([["content-type", "application/json"]]),
-            body: JSON.stringify(currentUser?.roles.includes("taskCreator") ? 2 : 1),
+            body: JSON.stringify(statusNumber),
         }
         const response = await fetch(apiAddress, init);
-
         const responseTask: Task = await response.json();
         setTask(responseTask);
 
+        if (statusNumber == 2) {
+            await scorePoints();
+        }
+
         setShowDoneAlert(true);
+    }
+
+    const scorePoints = async () => {
+        const today = new Date();
+        today.setHours(0);
+        today.setMinutes(0);
+        today.setSeconds(0);
+        const isDeadlineExpired = new Date(task!.deadline) < today;
+
+        if (isDeadlineExpired) {
+
+        } else {
+
+        }
     }
 
     return (
@@ -238,7 +255,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                         <IonImg alt="profile picture" src={assignee.profilPicture!} />
                                                     </IonAvatar>
                                                 ) : (
-                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px" }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: assignee.profilColor }}>{assignee.userName[0].toUpperCase()}</IonChip>
                                                 )}
                                                 <IonLabel style={{ marginRight: "0px", marginLeft: "10px" }}>{assignee.userName}</IonLabel>
                                                 <IonButton fill="clear" style={{ marginRight: "0px", paddingRight: "0px" }} onClick={() => handleRemoveAssignee(assignee)} >
@@ -254,7 +271,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                             <IonImg alt="profile picture" src={assignee.profilPicture!} />
                                                         </IonAvatar>
                                                     ) : (
-                                                        <IonChip className="no-button" style={{ width: "33px", height: "33px" }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                                                        <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: assignee.profilColor }}>{assignee.userName[0].toUpperCase()}</IonChip>
                                                     )}
                                                     <IonLabel slot={"end"} style={{ marginRight: "0px", marginLeft: "10px" }}>{assignee.userName}</IonLabel>
                                                 </IonItem>
@@ -290,7 +307,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                                         <IonImg alt="profile picture" src={user.profilPicture!} />
                                                                     </IonAvatar>
                                                                 ) : (
-                                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px" }}>{user.userName[0].toUpperCase()}</IonChip>
+                                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: user.profilColor }}>{user.userName[0].toUpperCase()}</IonChip>
                                                                 )}
                                                                 <IonLabel style={{ marginLeft: "10px" }}>{user.userName}</IonLabel>
                                                             </IonItem>
@@ -405,7 +422,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                         <IonIcon style={{ width: "22px", height: "22px" }} ios={trashOutline} md={trashSharp} />
                                                     </IonChip>
                                                     : task.status == 1 &&
-                                                    <IonChip color="warning" style={{ height: "39px" }} onClick={() => setShowDeleteAlert(true)}>
+                                                    <IonChip color="warning" style={{ height: "39px" }} onClick={() => changeTaskStatus(0)}>
                                                         <IonLabel class="edit-button">Visszaküld</IonLabel>
                                                         <IonIcon style={{ width: "22px", height: "22px" }} ios={skullOutline} md={skullSharp} />
                                                     </IonChip>
@@ -423,7 +440,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                         <IonIcon style={{ width: "22px", height: "22px" }} ios={pencilOutline} md={pencilSharp} />
                                                     </IonChip>
                                                     : task.status == 1 &&
-                                                    <IonChip color="success" style={{ height: "39px" }} onClick={() => handleDone()}>
+                                                    <IonChip color="success" style={{ height: "39px" }} onClick={() => changeTaskStatus(2)}>
                                                         <IonLabel class="edit-button">Jóváhagy</IonLabel>
                                                         <IonIcon style={{ width: "22px", height: "22px" }} ios={checkmarkCircleOutline} md={checkmarkCircleSharp} />
                                                     </IonChip>
@@ -434,7 +451,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                 {!isEditing && task.assignees.some(u => u.id == currentUser?.id) && task.status == 0 &&
                                     <IonRow class="ion-text-center ion-margin-top">
                                         <IonCol>
-                                            <IonChip color="success" onClick={() => handleDone()} >
+                                            <IonChip color="success" onClick={() => changeTaskStatus(currentUser?.roles.includes("taskCreator") ? 2 : 1)} >
                                                 <IonLabel class="done-button">Kész!</IonLabel>
                                                 <IonIcon style={{ width: "25px", height: "25px" }} ios={happyOutline} md={happySharp} />
                                             </IonChip>

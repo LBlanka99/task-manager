@@ -50,7 +50,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
                             {assignee.profilPicture !== undefined ? (
                             <img alt="profile picture" src={assignee.profilPicture!} />
                             ) : (
-                            <IonChip>{assignee.userName[0].toUpperCase()}</IonChip>
+                            <IonChip style={{ backgroundColor: assignee.profilColor }}>{assignee.userName[0].toUpperCase()}</IonChip>
                             )}
                         </IonAvatar>
                         ))}
