@@ -52,6 +52,7 @@ public class UserController : ControllerBase
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         CookieOptions cookieOptions = new CookieOptions();
         cookieOptions.Secure = true;
+        cookieOptions.Expires = new DateTimeOffset(2038, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
         Response.Cookies.Append("id", user.Id.ToString(), cookieOptions);
 
         await HttpContext.SignInAsync(
