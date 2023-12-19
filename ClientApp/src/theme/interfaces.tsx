@@ -3,6 +3,8 @@ export interface User {
     userName: string;
     email: string | null;
     password: string;
+    points: number;
+    profilColor: string;
     profilPicture: string | null;
     roles: string[];
 };
