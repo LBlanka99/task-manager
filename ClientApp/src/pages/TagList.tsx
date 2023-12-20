@@ -8,8 +8,9 @@ interface TagListPageProps {
     group: Group | undefined;
 }
 
-const TagListPage: React.FC<TagListPageProps> = ({group}) => {
+const TagListPage: React.FC<TagListPageProps> = ({ group }) => {
     const [tags, setTags] = useState<Tag[]>(group?.tags ?? []);
+    const [sortedTags, setSortedTags] = useState<Tag[]>([]);
     const [editingTag, setEditingTag] = useState<Tag | null>(null);
     const [newTagName, setNewTagName] = useState("");
     const [newTagColor, setNewTagColor] = useState("#FA8072");
@@ -20,8 +21,15 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
     const createModal = useRef<HTMLIonModalElement>(null);
 
     useEffect(() => {
-        setTags(group?.tags ?? []);
+        if (group?.tags) {
+            setTags(group.tags);
+            setSortedTags([...group.tags].sort((a, b) => (a.name.length > b.name.length) ? 1 : -1));
+        }
     }, [group]);
+
+    useEffect(() => {
+        setSortedTags([...tags].sort((a, b) => (a.name.length > b.name.length) ? 1 : -1));
+    }, [tags]);
 
     useEffect(() => {
         if (editingTag) {
@@ -46,7 +54,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
         setDeletingTag(null);
     }
 
-    const handleSaveEdit = async (e:any) => {
+    const handleSaveEdit = async (e: any) => {
         e.preventDefault();
         const apiAddress = `http://localhost:5180/api/v1/tags/${editingTag?.id}`;
 
@@ -69,12 +77,12 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
             prevTags.map((tag) => (tag.id === editingTag?.id ? { ...responseTag } : tag))
         );
 
-        setEditingTag(null);        
+        setEditingTag(null);
     };
 
     const handleCreateTag = async (e: any) => {
         e.preventDefault();
-        
+
         const apiAddress = `http://localhost:5180/api/v1/tags/${group?.id}/new-tag`;
 
         const newTag = {
@@ -82,7 +90,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
             "color": newTagColor
         };
 
-        const init:RequestInit = {
+        const init: RequestInit = {
             method: "POST",
             credentials: "include",
             headers: new Headers([["content-type", "application/json"]]),
@@ -91,7 +99,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
         const response = await fetch(apiAddress, init);
         const responseTag = await response.json();
 
-        
+
         setTags((prevTags) => [...prevTags, responseTag]);
 
         setNewTagName("");
@@ -106,25 +114,25 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
             <IonHeader>
                 <IonToolbar>
                     <IonButtons slot="start">
-                        <IonMenuButton/>
+                        <IonMenuButton />
                     </IonButtons>
                     <IonTitle>Címkék</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            {group ? 
+            {group ?
                 <IonContent class="ion-padding">
 
                     <IonList>
-                        {tags.map((tag, index) => (
-                            <IonChip key={index} style={{backgroundColor: tag.color}}>
-                                <p className="ion-no-margin ion-margin-end" style={{fontSize: "20px"}}>{tag.name}</p>
-                                
-                                <IonButton className="ion-no-padding" aria-label="edit" fill="clear" onClick={() => setEditingTag(tag)} style={{padding: "0px"}}>
+                        {sortedTags.map((tag, index) => (
+                            <IonChip key={index} style={{ backgroundColor: tag.color }}>
+                                <p className="ion-no-margin ion-margin-end" style={{ fontSize: "20px" }}>{tag.name}</p>
+
+                                <IonButton className="ion-no-padding" aria-label="edit" fill="clear" onClick={() => setEditingTag(tag)} style={{ padding: "0px" }}>
                                     <IonIcon slot="icon-only" color="light" aria-hidden ios={pencilOutline} md={pencilSharp} />
                                 </IonButton>
-                                <IonButton className="ion-no-padding" aria-label="delete" fill="clear" onClick={() => setDeletingTag(tag)} style={{padding: "0px"}}>
+                                <IonButton className="ion-no-padding" aria-label="delete" fill="clear" onClick={() => setDeletingTag(tag)} style={{ padding: "0px" }}>
                                     <IonIcon slot="icon-only" color="light" aria-hidden ios={trashOutline} md={trashSharp} />
-                                </IonButton>                            
+                                </IonButton>
                             </IonChip>
                         ))}
                     </IonList>
@@ -135,42 +143,42 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
                         </IonFabButton>
                     </IonFab>
 
-                    
+
                     <IonModal className="modal" id="new-tag-modal" trigger="open-new-tag-dialog" ref={createModal}>
                         <IonContent scrollY={false}>
                             <IonToolbar>
                                 <IonButtons slot="start">
                                     <IonButton color="primary" onClick={() => createModal.current?.dismiss()}>
-                                    Mégsem
+                                        Mégsem
                                     </IonButton>
                                 </IonButtons>
                                 <IonTitle>Új címke</IonTitle>
                                 <IonButtons slot="end">
                                     <IonButton color="primary" type="submit" form="new-tag-form">
-                                    Létrehozás
+                                        Létrehozás
                                     </IonButton>
                                 </IonButtons>
                             </IonToolbar>
                             <form id="new-tag-form" onSubmit={handleCreateTag}>
                                 <IonList>
-                                    <IonItem style={{marginTop: "15px"}}>                                        
+                                    <IonItem style={{ marginTop: "15px" }}>
                                         <IonInput
                                             label="Címke neve"
                                             placeholder="Ide írd a címke nevét"
                                             value={newTagName}
                                             clearInput
                                             onIonInput={(i) => setNewTagName(i.detail.value!)}
-                                            required                                          
+                                            required
                                         />
                                     </IonItem>
                                     <IonItem>
                                         <IonLabel>Címke színe</IonLabel>
                                         <input
                                             type="color"
-                                            value={newTagColor}                                            
-                                            onChange={(i) => setNewTagColor(i.target.value)}                                            
+                                            value={newTagColor}
+                                            onChange={(i) => setNewTagColor(i.target.value)}
                                         />
-                                    </IonItem>                                    
+                                    </IonItem>
                                 </IonList>
                             </form>
                         </IonContent>
@@ -181,66 +189,66 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
                             <IonToolbar>
                                 <IonButtons slot="start">
                                     <IonButton color="primary" onClick={() => setEditingTag(null)}>
-                                    Mégsem
+                                        Mégsem
                                     </IonButton>
                                 </IonButtons>
                                 <IonTitle class="ion-text-center">Szerkesztés</IonTitle>
                                 <IonButtons slot="end">
                                     <IonButton color="primary" type="submit" form="update-tag-form">
-                                    Mentés
+                                        Mentés
                                     </IonButton>
                                 </IonButtons>
                             </IonToolbar>
                             <form id="update-tag-form" onSubmit={handleSaveEdit}>
                                 <IonList>
-                                    <IonItem style={{marginTop: "15px"}}>                                        
+                                    <IonItem style={{ marginTop: "15px" }}>
                                         <IonInput
                                             label="Címke neve"
                                             value={editingTagName}
                                             clearInput
                                             onIonInput={(i) => setEditingTagName(i.detail.value!)}
-                                            required                                          
+                                            required
                                         />
                                     </IonItem>
                                     <IonItem>
                                         <IonLabel>Címke színe</IonLabel>
                                         <input
                                             type="color"
-                                            value={editingTagColor}                                       
-                                            onChange={(i) => setEditingTagColor(i.target.value!)}                                            
+                                            value={editingTagColor}
+                                            onChange={(i) => setEditingTagColor(i.target.value!)}
                                         />
-                                    </IonItem>                                    
+                                    </IonItem>
                                 </IonList>
                             </form>
                         </IonContent>
                     </IonModal>
-                    
+
                     <IonAlert
                         isOpen={deletingTag != null}
                         onDidDismiss={() => setDeletingTag(null)}
                         header={"Törlés megerősítése"}
                         message={"Biztos vagy benne, hogy törölni szeretnéd ezt a címkét?"}
                         buttons={[
-                        {
-                            text: "Mégsem",
-                            role: "cancel",
-                            handler: () => {
-                                setDeletingTag(null);
-                            }                          
-                        },
-                        {
-                            text: "Törlés",
-                            role: "confirm",
-                            handler: handleDeleteTag
-                        },
-                    ]}
+                            {
+                                text: "Mégsem",
+                                role: "cancel",
+                                handler: () => {
+                                    setDeletingTag(null);
+                                }
+                            },
+                            {
+                                text: "Törlés",
+                                role: "confirm",
+                                handler: handleDeleteTag
+                            },
+                        ]}
                     />
                 </IonContent>
-            :
+                :
                 <div></div>
             }
 
-            
+
         </IonPage>
     );
 };
