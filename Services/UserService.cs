@@ -96,4 +96,14 @@ public class UserService : TaskManagerService, IUserService
 
         return user;
     }
+
+    public async Task<UserModel> AddPointsToUserById(Guid userId, int pointstoAdd)
+    {
+        UserModel user = await FindEntityById<UserModel>(userId);
+        user.Points += pointstoAdd;
+        
+        await _context.SaveChangesAsync();
+
+        return user;
+    }
 }

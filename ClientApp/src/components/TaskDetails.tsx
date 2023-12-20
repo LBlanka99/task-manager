@@ -195,11 +195,25 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
         today.setSeconds(0);
         const isDeadlineExpired = new Date(task!.deadline) < today;
 
+        let pointsToAdd = task!.points;
+
         if (isDeadlineExpired) {
-
-        } else {
-
+            const deadline = new Date(task!.deadline);
+            deadline.setHours(0);
+            const daysPassed: number = Math.floor((today.getTime() - deadline.getTime()) / (1000 * 3600 * 24));
+            pointsToAdd = (pointsToAdd - daysPassed) < 1 ? 1 : pointsToAdd - daysPassed;
         }
+
+        task?.assignees.forEach(user => {
+            const apiAddress = `http://localhost:5180/api/v1/users/${user.id}/add-points`;
+            const init: RequestInit = {
+                method: "PATCH",
+                credentials: "include",
+                headers: new Headers([["content-type", "application/json"]]),
+                body: JSON.stringify(pointsToAdd),
+            }
+            fetch(apiAddress, init);
+        })
     }
 
     return (

@@ -72,6 +72,13 @@ public class UserController : ControllerBase
         return await _userService.FindEntityById<UserModel>(userId);
     }
 
-    
+    [Authorize(Roles = "taskCreator")]
+    [HttpPatch("{userId}/add-points")]
+    public async Task<UserModel> AddPointsToUserById(Guid userId, [FromBody] int points)
+    {
+        return await _userService.AddPointsToUserById(userId, points);
+    }
+
+
 
 }
