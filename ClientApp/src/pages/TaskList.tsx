@@ -320,31 +320,34 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                         <IonTitle>Feladatok</IonTitle>
                     </IonToolbar>
                     <IonItem lines="full">
-                        <IonItem lines="none">
-                            <IonChip className="filter-chip">
-                                <IonButton fill="clear" aria-label="desc/asc order" className="ion-no-padding ion-no-margin" style={{ marginRight: "10px" }} onClick={() => setIsAscending(!isAscending)}>
-                                    <IonIcon slot="icon-only" aria-hidden icon={arrowIcon} color="light"></IonIcon>
-                                </IonButton>
-                                <IonSelect
-                                    placeholder="Rendezés"
-                                    interface="popover"
-                                    toggleIcon={caretDownOutline}
-                                    expandedIcon={caretUpOutline}
-                                    onIonChange={(c) => setSortBy(c.detail.value)}
-                                >
-                                    <IonSelectOption class="ion-text-center" value="" disabled>-- Rendezés --</IonSelectOption>
-                                    <IonSelectOption value="title">Név</IonSelectOption>
-                                    <IonSelectOption value="deadline">Határidő</IonSelectOption>
-                                    <IonSelectOption value="points">Pont</IonSelectOption>
-                                </IonSelect>
-                            </IonChip>
-                        </IonItem>
-                        <IonItem lines="none">
-                            <IonChip className="filter-chip" aria-label="filter" onClick={async () => await menuController.open("end")}>
-                                <IonIcon aria-hidden icon={options} color="light" style={{ marginRight: "13px", marginLeft: "4px" }} />
-                                <IonLabel style={{ marginRight: "3px" }}>Szűrés</IonLabel>
-                            </IonChip>
-                        </IonItem>
+                        <IonGrid>
+                            <IonRow class="ion-justify-content-around">
+                                <IonItem lines="none" className="item-without-padding">
+                                    <IonChip className="filter-chip">
+                                        <IonButton fill="clear" aria-label="desc/asc order" className="ion-no-padding ion-no-margin" style={{ marginRight: "10px" }} onClick={() => { setIsAscending(!isAscending) }}>
+                                            <IonIcon slot="icon-only" aria-hidden icon={arrowIcon} color="light"></IonIcon>
+                                        </IonButton>
+                                        <IonSelect
+                                            placeholder="Rendezés"
+                                            interface="popover"
+                                            toggleIcon={caretDownOutline}
+                                            expandedIcon={caretUpOutline}
+                                            onIonChange={(c) => setSortBy(c.detail.value)}
+                                            style={{ maxWidth: "100%", paddingLeft: "0px" }}
+                                        >
+                                            <IonSelectOption class="ion-text-center" value="" disabled>-- Rendezés --</IonSelectOption>
+                                            <IonSelectOption value="title">Név</IonSelectOption>
+                                            <IonSelectOption value="deadline">Határidő</IonSelectOption>
+                                            <IonSelectOption value="points">Pont</IonSelectOption>
+                                        </IonSelect>
+                                    </IonChip>
+                                </IonItem>
+                                <IonChip className="filter-chip" aria-label="filter" onClick={async () => await menuController.open("end")}>
+                                    <IonIcon aria-hidden icon={options} color="light" style={{ marginRight: "13px", marginLeft: "4px" }} />
+                                    <IonLabel style={{ marginRight: "3px" }}>Szűrés</IonLabel>
+                                </IonChip>
+                            </IonRow>
+                        </IonGrid>
                     </IonItem>
                 </IonHeader>
                 {group &&

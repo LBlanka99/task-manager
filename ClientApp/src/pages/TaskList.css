@@ -46,3 +46,8 @@ ion-menu.md ion-item {
 .md ion-accordion ion-item {
     --ion-item-background: #4c6083;
 }
+
+.item-without-padding {
+    --padding-start: 0px;
+    --inner-padding-end: 0px;
+}
