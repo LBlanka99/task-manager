@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { addCircleOutline, addCircleSharp, copyOutline, copySharp, duplicateOutline, duplicateSharp, logInOutline, logInSharp, logOutOutline, logOutSharp, pricetagsOutline, pricetagsSharp } from 'ionicons/icons';
+import { addCircleOutline, addCircleSharp, copyOutline, copySharp, duplicateOutline, duplicateSharp, logInOutline, logInSharp, logOutOutline, logOutSharp, personCircleOutline, personCircleSharp, personOutline, personSharp, pricetagsOutline, pricetagsSharp } from 'ionicons/icons';
 import './Menu.css';
 import { useEffect, useState } from 'react';
 import { Group, User } from '../theme/interfaces';
@@ -33,6 +33,12 @@ const appPagesWhenLoggedOut: AppPage[] = [
 ];
 
 const appPagesWhenLoggedIn: AppPage[] = [
+  {
+    title: "Profilom",
+    url: "/my-profile",
+    iosIcon: personOutline,
+    mdIcon: personSharp
+  },
   {
     title: "Feladatok",
     url: "/tasks",
@@ -62,35 +68,7 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({currentUser, currentGroup, setUserCookie}) => {
   const location = useLocation();
-  const [userName, setUserName] = useState("");
-  const [groupName, setGroupName] = useState("");
 
-  const getUserName = async (id: string) => {
-    const apiAddress = `http://localhost:5180/api/v1/users/${id}`;
-  
-    const response = await fetch(apiAddress, {credentials: "include"});
-    const user = await response.json();
-    return user.userName;
-  }
-  
-  const getGroupName = async (id: string) => {
-    const apiAddress = `http://localhost:5180/api/v1/groups/${id}`;
-  
-    const response = await fetch(apiAddress, {credentials: "include"});
-    const group = await response.json();
-    return group.name;
-  }
-
-  useEffect(() => {
-    if (userCookie) {
-      const id = userCookie.split("=")[1];
-      getUserName(id).then(res => setUserName(res));
-      getGroupName(id).then(res => setGroupName(res));
-    } else {
-      setUserName("");
-      setGroupName("");
-    }
-  }, [userCookie]);
 
   const handleLogout = async () => {
     await fetch("http://localhost:5180/api/v1/users/log-out", {credentials: "include"});

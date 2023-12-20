@@ -30,6 +30,7 @@ import { User } from './theme/interfaces';
 import NewTaskPage from './pages/NewTask';
 import TagListPage from './pages/TagList';
 import TaskDetails from './components/TaskDetails';
+import ProfilPage from './pages/Profil';
 
 setupIonicReact();
 
@@ -78,6 +79,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/tasks/:taskId">
               <TaskDetails currentUser={currentUser} />
+            </Route>
+            <Route path="/my-profile">
+              <ProfilPage user={currentUser} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
