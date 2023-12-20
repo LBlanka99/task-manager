@@ -47,6 +47,9 @@ const App: React.FC = () => {
 
       const userApiAddress = `http://localhost:5180/api/v1/users/${id}`;
       fetch(userApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentUser(res));
+    } else {
+      setCurrentUser(undefined);
+      setCurrentGroup(undefined);
     }
     
   }, [userCookie]);
@@ -55,7 +58,7 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu userCookie={userCookie} setUserCookie={setUserCookie}/>
+          <Menu currentUser={currentUser} currentGroup={currentGroup} setUserCookie={setUserCookie}/>
           <IonRouterOutlet id="main">
             <Route path="/" exact>
               <Redirect to="/login" />
