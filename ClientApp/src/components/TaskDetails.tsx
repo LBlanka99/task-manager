@@ -323,7 +323,11 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                                 ) : (
                                                                     <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: user.profilColor }}>{user.userName[0].toUpperCase()}</IonChip>
                                                                 )}
-                                                                <IonLabel style={{ marginLeft: "10px" }}>{user.userName}</IonLabel>
+                                                                <IonLabel style={{ marginLeft: "10px" }}>
+                                                                    <h2 >{user.userName}</h2>
+                                                                    <p>{user.roles.includes("taskCreator") ? "frankó felnőtt" : "lezser lurkó"}</p>
+                                                                </IonLabel>
+
                                                             </IonItem>
                                                         ))}
                                                     </IonList>

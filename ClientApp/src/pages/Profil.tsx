@@ -41,7 +41,7 @@ const ProfilPage: React.FC<ProfilPageProps> = ({ user }) => {
                         <IonItem>
                             <IonIcon ios={constructOutline} md={constructSharp} slot="start" color="primary" />
                             <IonLabel color="primary">Szerepkör</IonLabel>
-                            <IonText>{user.roles.includes("taskCreator") ? "felelős felnőtt" : "lelkes lurkó"}</IonText>
+                            <IonText>{user.roles.includes("taskCreator") ? "frankó felnőtt" : "lezser lurkó"}</IonText>
                         </IonItem>
                     </IonList>
                 </IonContent>
