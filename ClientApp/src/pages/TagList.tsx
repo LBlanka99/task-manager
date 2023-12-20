@@ -9,6 +9,7 @@ interface TagListPageProps {
 }
 
 const TagListPage: React.FC<TagListPageProps> = ({group}) => {
+    const [tags, setTags] = useState<Tag[]>(group?.tags ?? []);
     const [editingTag, setEditingTag] = useState<Tag | null>(null);
     const [newTagName, setNewTagName] = useState("");
     const [newTagColor, setNewTagColor] = useState("#FA8072");
@@ -17,6 +18,10 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
     const [deletingTag, setDeletingTag] = useState<Tag | null>(null);
 
     const createModal = useRef<HTMLIonModalElement>(null);
+
+    useEffect(() => {
+        setTags(group?.tags ?? []);
+    }, [group]);
 
     useEffect(() => {
         if (editingTag) {
@@ -36,9 +41,9 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
         }
         const response = await fetch(apiAddress, init);
 
-        setDeletingTag(null);
+        setTags((prevTags) => prevTags.filter((tag) => tag.id !== deletingTag?.id));
 
-        location.reload();
+        setDeletingTag(null);
     }
 
     const handleSaveEdit = async (e:any) => {
@@ -49,7 +54,6 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
             "name": editingTagName,
             "color": editingTagColor,
         };
-        console.log(updatedTag);
 
         const init: RequestInit = {
             method: "PUT",
@@ -59,10 +63,13 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
         };
 
         const response = await fetch(apiAddress, init);
+        const responseTag = await response.json();
 
-        setEditingTag(null);
+        setTags((prevTags) =>
+            prevTags.map((tag) => (tag.id === editingTag?.id ? { ...responseTag } : tag))
+        );
 
-        //location.reload();
+        setEditingTag(null);        
     };
 
     const handleCreateTag = async (e: any) => {
@@ -82,13 +89,15 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
             body: JSON.stringify(newTag),
         };
         const response = await fetch(apiAddress, init);
+        const responseTag = await response.json();
+
+        
+        setTags((prevTags) => [...prevTags, responseTag]);
 
         setNewTagName("");
         setNewTagColor("#FA8072");
 
         createModal.current?.dismiss();
-
-        location.reload();
     };
 
 
@@ -106,7 +115,7 @@ const TagListPage: React.FC<TagListPageProps> = ({group}) => {
                 <IonContent class="ion-padding">
 
                     <IonList>
-                        {group.tags.map((tag, index) => (
+                        {tags.map((tag, index) => (
                             <IonChip key={index} style={{backgroundColor: tag.color}}>
                                 <p className="ion-no-margin ion-margin-end" style={{fontSize: "20px"}}>{tag.name}</p>
                                 
