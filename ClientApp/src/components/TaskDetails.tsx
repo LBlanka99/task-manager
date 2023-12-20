@@ -185,7 +185,10 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
             await scorePoints();
         }
 
-        setShowDoneAlert(true);
+        if (statusNumber != 0) {
+            setShowDoneAlert(true);
+        }
+
     }
 
     const scorePoints = async () => {
