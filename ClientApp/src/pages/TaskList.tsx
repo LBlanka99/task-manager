@@ -1,4 +1,4 @@
-import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonChip, IonCol, IonContent, IonDatetime, IonDatetimeButton, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuButton, IonMenuToggle, IonModal, IonPage, IonPopover, IonRow, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAccordion, IonAccordionGroup, IonButton, IonButtons, IonCheckbox, IonChip, IonCol, IonContent, IonDatetime, IonDatetimeButton, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuButton, IonMenuToggle, IonModal, IonPage, IonPopover, IonRow, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter } from "@ionic/react";
 import "./TaskList.css";
 import { useEffect, useState } from "react";
 import { Group, Tag, Task, User } from "../theme/interfaces";
@@ -12,6 +12,7 @@ interface TaskListPageProps {
 }
 
 const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
+    const [loading, setLoading] = useState(true);
     const [allTasks, setAllTasks] = useState<Task[]>([]);
     const [displayTasks, setDisplayTasks] = useState<Task[]>(allTasks);
     const [isAscending, setIsAscending] = useState(true);
@@ -36,19 +37,26 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
 
     const fetchTasks = async () => {
         const apiAddress = `http://localhost:5180/api/v1/groups/all-tasks/${group?.id}`;
-
         const response = await fetch(apiAddress, { credentials: "include" });
-        return await response.json();
+        const responseTask: Task[] = await response.json();
+        setAllTasks(responseTask);
     }
 
     useEffect(() => {
-        if (group) {
-            fetchTasks().then(res => {
-                setAllTasks(res);
-                setDisplayTasks(res);
-            });
+        if (group && loading) {
+            fetchTasks();
+            setLoading(false);
         }
-    }, [group])
+
+    }, [group, loading])
+
+    useIonViewWillEnter(() => {
+        setLoading(true);
+    });
+
+    useEffect(() => {
+        handleFilter();
+    }, [allTasks])
 
     useEffect(() => {
         if (sortBy) {
@@ -58,10 +66,10 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
             } else {
                 displayTasks.sort((a, b) => (a[sortBy] > b[sortBy]) ? 1 * direction : -1 * direction);
             }
-            setAllTasks([...allTasks]);
+            setDisplayTasks([...displayTasks]);
         }
 
-    }, [isAscending, sortBy]);
+    }, [isAscending, sortBy, allTasks]);
 
     useEffect(() => {
         if (minDate != "2023-12-01" || maxDate != "2030-12-31" || maxPoint || maxPoint || selectedAssignees.length > 0 || selectedStatuses.length > 0 || selectedTags.length > 0) {
@@ -303,7 +311,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                     </IonGrid>
                 </IonContent>
             </IonMenu>
-            <IonPage id="filter-content">
+            <IonPage id="filter-content" >
                 <IonHeader>
                     <IonToolbar>
                         <IonButtons slot="start">
@@ -312,47 +320,47 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                         <IonTitle>Feladatok</IonTitle>
                     </IonToolbar>
                     <IonItem lines="full">
-                            <IonItem lines="none">
-                                <IonChip>
-                                    <IonButton fill="clear" aria-label="desc/asc order" className="ion-no-padding ion-no-margin" style={{ marginRight: "10px" }} onClick={() => setIsAscending(!isAscending)}>
-                                        <IonIcon slot="icon-only" aria-hidden icon={arrowIcon} color="light"></IonIcon>
-                                    </IonButton>
-                                    <IonSelect
-                                        placeholder="Rendezés"
-                                        interface="popover"
-                                        toggleIcon={caretDownOutline}
-                                        expandedIcon={caretUpOutline}
-                                        onIonChange={(c) => setSortBy(c.detail.value)}
-                                    >
-                                        <IonSelectOption class="ion-text-center" value="" disabled>-- Rendezés --</IonSelectOption>
-                                        <IonSelectOption value="title">Név</IonSelectOption>
-                                        <IonSelectOption value="deadline">Határidő</IonSelectOption>
-                                        <IonSelectOption value="points">Pont</IonSelectOption>
-                                    </IonSelect>
-                                </IonChip>
-                            </IonItem>
-                            <IonItem lines="none">
-                                <IonChip aria-label="filter" onClick={async () => await menuController.open("end")}>
-                                    <IonIcon aria-hidden icon={options} color="light" style={{ marginRight: "13px", marginLeft: "4px" }} />
-                                    <IonLabel style={{ marginRight: "3px" }}>Szűrés</IonLabel>
-                                </IonChip>
-                            </IonItem>
+                        <IonItem lines="none">
+                            <IonChip>
+                                <IonButton fill="clear" aria-label="desc/asc order" className="ion-no-padding ion-no-margin" style={{ marginRight: "10px" }} onClick={() => setIsAscending(!isAscending)}>
+                                    <IonIcon slot="icon-only" aria-hidden icon={arrowIcon} color="light"></IonIcon>
+                                </IonButton>
+                                <IonSelect
+                                    placeholder="Rendezés"
+                                    interface="popover"
+                                    toggleIcon={caretDownOutline}
+                                    expandedIcon={caretUpOutline}
+                                    onIonChange={(c) => setSortBy(c.detail.value)}
+                                >
+                                    <IonSelectOption class="ion-text-center" value="" disabled>-- Rendezés --</IonSelectOption>
+                                    <IonSelectOption value="title">Név</IonSelectOption>
+                                    <IonSelectOption value="deadline">Határidő</IonSelectOption>
+                                    <IonSelectOption value="points">Pont</IonSelectOption>
+                                </IonSelect>
+                            </IonChip>
                         </IonItem>
+                        <IonItem lines="none">
+                            <IonChip aria-label="filter" onClick={async () => await menuController.open("end")}>
+                                <IonIcon aria-hidden icon={options} color="light" style={{ marginRight: "13px", marginLeft: "4px" }} />
+                                <IonLabel style={{ marginRight: "3px" }}>Szűrés</IonLabel>
+                            </IonChip>
+                        </IonItem>
+                    </IonItem>
                 </IonHeader>
                 {group &&
-                        <IonContent>
-                            {displayTasks.length > 0 ? displayTasks.map((task, index) => (
-                                <TaskCard key={index} taskModel={task} currentUser={currentUser!}></TaskCard>
-                            ))
-                                :
-                                <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>
-                            }
-                            <IonFab slot="fixed" vertical="bottom" horizontal="end" class="ion-margin">
-                                <IonFabButton aria-label="new-task" color={"primary"} routerLink="/new-task" routerDirection="forward">
-                                    <IonIcon icon={add}></IonIcon>
-                                </IonFabButton>
-                            </IonFab>
-                        </IonContent>
+                    <IonContent>
+                        {displayTasks.length > 0 ? displayTasks.map((task, index) => (
+                            <TaskCard key={index} taskModel={task} currentUser={currentUser!}></TaskCard>
+                        ))
+                            :
+                            <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>
+                        }
+                        <IonFab slot="fixed" vertical="bottom" horizontal="end" class="ion-margin">
+                            <IonFabButton aria-label="new-task" color={"primary"} routerLink="/new-task" routerDirection="forward">
+                                <IonIcon icon={add}></IonIcon>
+                            </IonFabButton>
+                        </IonFab>
+                    </IonContent>
                 }
             </IonPage>
         </>
