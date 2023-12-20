@@ -4,6 +4,7 @@ import { Group, Tag, Task, User } from "../theme/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { calendar, person, pricetag, informationCircle, calendarOutline, calendarSharp, personOutline, personSharp, trophyOutline, trophySharp, pricetagOutline, pricetagSharp, hourglassOutline, hourglassSharp, informationCircleOutline, trashOutline, trashSharp, pencilOutline, pencilSharp, checkmarkCircleOutline, checkmarkCircleSharp, checkmarkOutline, checkmarkSharp, happyOutline, happySharp, arrowUndoOutline, arrowUndoSharp, saveOutline, saveSharp, closeCircleOutline, closeSharp, closeCircleSharp, addOutline, addSharp, skullOutline, skullSharp, cloudDoneOutline } from "ionicons/icons";
 import { useParams } from "react-router";
+import { getContrastColor } from "../theme/colorUtils";
 
 interface TaskDetailsProps {
     currentUser: User | undefined;
@@ -272,7 +273,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                         <IonImg alt="profile picture" src={assignee.profilPicture!} />
                                                     </IonAvatar>
                                                 ) : (
-                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: assignee.profilColor }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor) }}>{assignee.userName[0].toUpperCase()}</IonChip>
                                                 )}
                                                 <IonLabel style={{ marginRight: "0px", marginLeft: "10px" }}>{assignee.userName}</IonLabel>
                                                 <IonButton fill="clear" style={{ marginRight: "0px", paddingRight: "0px" }} onClick={() => handleRemoveAssignee(assignee)} >
@@ -288,7 +289,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                             <IonImg alt="profile picture" src={assignee.profilPicture!} />
                                                         </IonAvatar>
                                                     ) : (
-                                                        <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: assignee.profilColor }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                                                        <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor) }}>{assignee.userName[0].toUpperCase()}</IonChip>
                                                     )}
                                                     <IonLabel slot={"end"} style={{ marginRight: "0px", marginLeft: "10px" }}>{assignee.userName}</IonLabel>
                                                 </IonItem>
@@ -324,7 +325,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                                         <IonImg alt="profile picture" src={user.profilPicture!} />
                                                                     </IonAvatar>
                                                                 ) : (
-                                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: user.profilColor }}>{user.userName[0].toUpperCase()}</IonChip>
+                                                                    <IonChip className="no-button" style={{ width: "33px", height: "33px", backgroundColor: user.profilColor, color: getContrastColor(user.profilColor) }}>{user.userName[0].toUpperCase()}</IonChip>
                                                                 )}
                                                                 <IonLabel style={{ marginLeft: "10px" }}>
                                                                     <h2 >{user.userName}</h2>
@@ -363,7 +364,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                     {isEditing ? (
                                         newTags.map((tag: Tag) => (
                                             <IonItem className="item-inner-full" key={tag.id} lines="none">
-                                                <IonChip className="no-button" style={{ backgroundColor: tag.color, marginRight: "0px" }}>{tag.name}</IonChip>
+                                                <IonChip className="no-button" style={{ backgroundColor: tag.color, color: getContrastColor(tag.color), marginRight: "0px" }}>{tag.name}</IonChip>
                                                 <IonButton slot="end" fill="clear" style={{ marginRight: "0px", paddingRight: "0px" }} onClick={() => handleRemoveTag(tag)} >
                                                     <IonIcon color="medium" ios={closeCircleSharp} md={closeSharp} />
                                                 </IonButton>
@@ -372,7 +373,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                     ) : (
                                         task.tags.map((tag: Tag) => (
                                             <IonItem className="item-inner-full" key={tag.id} lines="none" style={{ marginRight: "8px" }}>
-                                                <IonChip className="no-button" slot={"end"} style={{ backgroundColor: tag.color, marginRight: "0px" }}>{tag.name}</IonChip>
+                                                <IonChip className="no-button" slot={"end"} style={{ backgroundColor: tag.color, color: getContrastColor(tag.color), marginRight: "0px" }}>{tag.name}</IonChip>
                                             </IonItem>
                                         )))
                                     }
@@ -399,7 +400,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                                                     </IonToolbar>
                                                     <IonList inset>
                                                         {furtherTags.map((tag, index) => (
-                                                            <IonChip key={index} style={{ backgroundColor: tag.color, margin: "10px" }} onClick={() => handleAddTag(tag)}>{tag.name}</IonChip>
+                                                            <IonChip key={index} style={{ backgroundColor: tag.color, color: getContrastColor(tag.color), margin: "10px" }} onClick={() => handleAddTag(tag)}>{tag.name}</IonChip>
 
                                                         ))}
                                                     </IonList>

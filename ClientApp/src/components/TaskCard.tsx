@@ -2,6 +2,7 @@ import { IonAvatar, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonChi
 import { Task, User } from "../theme/interfaces";
 import "./TaskCard.css";
 import TaskDetails from "./TaskDetails";
+import { getContrastColor } from "../theme/colorUtils";
 
 interface TaskProps {
     taskModel: Task,
@@ -18,6 +19,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
 
     const detailsUrl = `/tasks/${taskModel.id}`;
 
+    
     return (
         <IonRouterLink routerDirection="forward" routerLink={detailsUrl}>
         <IonCard  className="card" button >
@@ -30,7 +32,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
                 <IonRow className="ion-align-items-start ion-justify-content-end">
                     <IonCol className="ion-text-left">
                     {taskModel.tags.map((tag, index) => (
-                        <IonChip key={index} style={{ backgroundColor: tag.color }}>
+                        <IonChip key={index} style={{ backgroundColor: tag.color, color: getContrastColor(tag.color) }}>
                         {tag.name}
                         </IonChip>
                     ))}
@@ -50,7 +52,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
                             {assignee.profilPicture !== undefined ? (
                             <img alt="profile picture" src={assignee.profilPicture!} />
                             ) : (
-                            <IonChip style={{ backgroundColor: assignee.profilColor }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                            <IonChip style={{ backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor) }}>{assignee.userName[0].toUpperCase()}</IonChip>
                             )}
                         </IonAvatar>
                         ))}

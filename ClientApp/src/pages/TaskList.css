@@ -3,30 +3,14 @@
     margin-top: 10px;
 }
 
-ion-item ion-chip {
+.filter-chip {
     background-color: var(--ion-color-primary);
     color: var(--ion-color-light);
     height: 35px;
 }
 
-ion-item ion-chip ion-button ion-icon:hover {
-    color: var(--ion-color-light-tint);
-}
-
-ion-item ion-chip ion-button ion-icon:active {
-    color: var(--ion-color-light-shade);
-}
-
-ion-item ion-chip:hover {
-    background-color: var(--ion-color-primary-tint);    
-}
-
 ion-chip ion-select::part(icon) {
     color: var(--ion-color-light);
-}
-
-ion-menu ion-checkbox {
-    size: 32px;
 }
 
 ion-menu ion-checkbox::part(container) {

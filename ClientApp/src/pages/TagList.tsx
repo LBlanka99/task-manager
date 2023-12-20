@@ -3,6 +3,7 @@ import "./TagList.css";
 import { Group, Tag } from "../theme/interfaces";
 import { add, addCircleOutline, addCircleSharp, pencil, pencilOutline, pencilSharp, trash, trashOutline, trashSharp } from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
+import { getContrastColor } from "../theme/colorUtils";
 
 interface TagListPageProps {
     group: Group | undefined;
@@ -124,14 +125,14 @@ const TagListPage: React.FC<TagListPageProps> = ({ group }) => {
 
                     <IonList>
                         {sortedTags.map((tag, index) => (
-                            <IonChip key={index} style={{ backgroundColor: tag.color }}>
+                            <IonChip key={index} style={{ backgroundColor: tag.color, color: getContrastColor(tag.color) }}>
                                 <p className="ion-no-margin ion-margin-end" style={{ fontSize: "20px" }}>{tag.name}</p>
 
                                 <IonButton className="ion-no-padding" aria-label="edit" fill="clear" onClick={() => setEditingTag(tag)} style={{ padding: "0px" }}>
-                                    <IonIcon slot="icon-only" color="light" aria-hidden ios={pencilOutline} md={pencilSharp} />
+                                    <IonIcon slot="icon-only" aria-hidden ios={pencilOutline} md={pencilSharp} style={{ color: getContrastColor(tag.color)}} />
                                 </IonButton>
                                 <IonButton className="ion-no-padding" aria-label="delete" fill="clear" onClick={() => setDeletingTag(tag)} style={{ padding: "0px" }}>
-                                    <IonIcon slot="icon-only" color="light" aria-hidden ios={trashOutline} md={trashSharp} />
+                                    <IonIcon slot="icon-only"  aria-hidden ios={trashOutline} md={trashSharp} style={{ color: getContrastColor(tag.color)}} />
                                 </IonButton>
                             </IonChip>
                         ))}

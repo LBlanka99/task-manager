@@ -321,7 +321,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                     </IonToolbar>
                     <IonItem lines="full">
                         <IonItem lines="none">
-                            <IonChip>
+                            <IonChip className="filter-chip">
                                 <IonButton fill="clear" aria-label="desc/asc order" className="ion-no-padding ion-no-margin" style={{ marginRight: "10px" }} onClick={() => setIsAscending(!isAscending)}>
                                     <IonIcon slot="icon-only" aria-hidden icon={arrowIcon} color="light"></IonIcon>
                                 </IonButton>
@@ -340,7 +340,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                             </IonChip>
                         </IonItem>
                         <IonItem lines="none">
-                            <IonChip aria-label="filter" onClick={async () => await menuController.open("end")}>
+                            <IonChip className="filter-chip" aria-label="filter" onClick={async () => await menuController.open("end")}>
                                 <IonIcon aria-hidden icon={options} color="light" style={{ marginRight: "13px", marginLeft: "4px" }} />
                                 <IonLabel style={{ marginRight: "3px" }}>Szűrés</IonLabel>
                             </IonChip>
