@@ -32,7 +32,7 @@ const appPagesWhenLoggedOut: AppPage[] = [
   }
 ];
 
-const appPagesWhenLoggedIn: AppPage[] = [
+const appPagesWhenLoggedInAsTaskCreator: AppPage[] = [
   {
     title: "Profilom",
     url: "/my-profile",
@@ -56,8 +56,28 @@ const appPagesWhenLoggedIn: AppPage[] = [
     url: "/tags",
     iosIcon: pricetagsOutline,
     mdIcon: pricetagsSharp
-  }
-  
+  }  
+]
+
+const appPagesWhenLoggedInAsSimpleUser: AppPage[] = [
+  {
+    title: "Profilom",
+    url: "/my-profile",
+    iosIcon: personOutline,
+    mdIcon: personSharp
+  },
+  {
+    title: "Feladatok",
+    url: "/tasks",
+    iosIcon: copyOutline,
+    mdIcon: copySharp
+  },
+  {
+    title: "Címkék",
+    url: "/tags",
+    iosIcon: pricetagsOutline,
+    mdIcon: pricetagsSharp
+  }  
 ]
 
 interface MenuProps {
@@ -75,7 +95,7 @@ const Menu: React.FC<MenuProps> = ({currentUser, currentGroup, setUserCookie}) =
     setUserCookie(undefined);
   }
 
-  const menuItems = currentUser ? appPagesWhenLoggedIn : appPagesWhenLoggedOut;
+  const menuItems = currentUser ? (currentUser.roles.includes("taskCreator") ? appPagesWhenLoggedInAsTaskCreator : appPagesWhenLoggedInAsSimpleUser) : appPagesWhenLoggedOut;
 
   return (
     <IonMenu contentId="main" type="overlay">

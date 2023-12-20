@@ -355,11 +355,13 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                             :
                             <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>
                         }
-                        <IonFab slot="fixed" vertical="bottom" horizontal="end" class="ion-margin">
-                            <IonFabButton aria-label="new-task" color={"primary"} routerLink="/new-task" routerDirection="forward">
-                                <IonIcon icon={add}></IonIcon>
-                            </IonFabButton>
-                        </IonFab>
+                        {currentUser?.roles.includes("taskCreator") &&
+                            <IonFab slot="fixed" vertical="bottom" horizontal="end" class="ion-margin">
+                                <IonFabButton aria-label="new-task" color={"primary"} routerLink="/new-task" routerDirection="forward">
+                                    <IonIcon icon={add}></IonIcon>
+                                </IonFabButton>
+                            </IonFab>
+                        }
                     </IonContent>
                 }
             </IonPage>

@@ -19,6 +19,7 @@ public class TaskController : ControllerBase
         _taskService = taskService;
     }
 
+    [Authorize(Roles = "taskCreator")]
     [HttpPost("{groupId}/new-task")]
     public async Task<TaskModel> PostNewTask(Guid groupId, [FromBody] TaskModel newTask)
     {
@@ -31,12 +32,14 @@ public class TaskController : ControllerBase
         return await _taskService.GetTaskById(taskId);
     }
 
+    [Authorize(Roles = "taskCreator")]
     [HttpDelete("{taskId}")]
     public async Task DeleteTask(Guid taskId)
     {
         await _taskService.DeleteTask(taskId);
     }
 
+    [Authorize(Roles = "taskCreator")]
     [HttpPut("{taskId}")]
     public async Task<TaskModel> PutTask(Guid taskId, [FromBody] TaskModel updatedTask)
     {
