@@ -79,6 +79,12 @@ public class UserController : ControllerBase
         return await _userService.AddPointsToUserById(userId, points);
     }
 
+    [HttpPatch("{userId}/reduce-points")]
+    public async Task<UserModel> RedeemPoints(Guid userId, [FromBody] int points)
+    {
+        return await _userService.RedeemPoints(userId, points);
+    }
+
 
 
 }

@@ -106,4 +106,19 @@ public class UserService : TaskManagerService, IUserService
 
         return user;
     }
+
+    public async Task<UserModel> RedeemPoints(Guid userId, int pointsToRedeem)
+    {
+        UserModel user = await FindEntityById<UserModel>(userId);
+        user.Points -= pointsToRedeem;
+
+        if (user.Points < 0)
+        {
+            throw new YouDontHaveEnoughPointsException("You don't have enough points for this gift!");
+        }
+        
+        await _context.SaveChangesAsync();
+
+        return user;
+    }
 }

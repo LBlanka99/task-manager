@@ -81,7 +81,7 @@ const App: React.FC = () => {
               <TaskDetails currentUser={currentUser} />
             </Route>
             <Route path="/my-profile">
-              <ProfilPage user={currentUser} />
+              <ProfilPage currentUser={currentUser} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

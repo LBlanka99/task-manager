@@ -89,6 +89,11 @@ app.Use(async (context, next) =>
         context.Response.StatusCode = 401;
         await context.Response.WriteAsync(e.Message);
     }
+    catch (YouDontHaveEnoughPointsException e)
+    {
+        context.Response.StatusCode = 404;
+        await context.Response.WriteAsync(e.Message);
+    }
 });
 
 // Configure the HTTP request pipeline.
