@@ -21,8 +21,9 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, className}) => {
 
     
     return (
-        <IonRouterLink routerDirection="forward" routerLink={detailsUrl}>
+        
         <IonCard  className={className} button >
+            <IonRouterLink routerDirection="forward" routerLink={detailsUrl}>
             <IonCardHeader>
                 <IonCardTitle className="ion-text-center" >{taskModel.title}</IonCardTitle>
             </IonCardHeader>
@@ -61,8 +62,9 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, className}) => {
                 </IonRow>
                 </IonGrid>
             </IonCardContent>
+            </IonRouterLink>
         </IonCard>
-        </IonRouterLink>
+        
     );
 };
 
