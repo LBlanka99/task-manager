@@ -26,5 +26,9 @@ ion-chip ion-button {
     margin-top: 30px;
 }
 
+.border-chip {
+    border: 1px solid #cadcfd;
+}
+
 
 

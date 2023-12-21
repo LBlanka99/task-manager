@@ -125,7 +125,7 @@ const TagListPage: React.FC<TagListPageProps> = ({ group }) => {
 
                     <IonList>
                         {sortedTags.map((tag, index) => (
-                            <IonChip key={index} style={{ backgroundColor: tag.color, color: getContrastColor(tag.color) }}>
+                            <IonChip key={index} className="border-chip" style={{ backgroundColor: tag.color, color: getContrastColor(tag.color) }}>
                                 <p className="ion-no-margin ion-margin-end" style={{ fontSize: "20px" }}>{tag.name}</p>
 
                                 <IonButton className="ion-no-padding" aria-label="edit" fill="clear" onClick={() => setEditingTag(tag)} style={{ padding: "0px" }}>
