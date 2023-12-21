@@ -1,0 +1,34 @@
+ion-chip ion-button {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 12px;
+}
+
+.modal {
+    --height: 30%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.modal::part(backdrop) {
+    background: rgb(148, 165, 189);
+    opacity: 1;
+}
+
+.modal form {
+    max-width: 500px;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.border-chip {
+    border: 1px solid #cadcfd;
+}
+
+
+

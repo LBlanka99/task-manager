@@ -28,7 +28,19 @@ public class GroupController : ControllerBase
         }
         return await _groupService.CreateNewGroup(data);
     }
-    
+
+    [HttpGet("all-tasks/{groupId}")]
+    public async Task<List<TaskModel>> GetAllTasksInAGroup(Guid groupId)
+    {
+        return await _groupService.GetAllTasksInAGroup(groupId);
+    }
+
+    [HttpGet("all-tags/{groupId}")]
+    public async Task<List<TagModel>> GetAllTagsInAGroup(Guid groupId)
+    {
+        return await _groupService.GetAllTagsInAGroup(groupId);
+    }
+
     [HttpGet("{userId}")]
     public async Task<GroupModel> GetGroupByUserId(Guid userId)
     {

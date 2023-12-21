@@ -1,6 +1,7 @@
 import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonInput, IonLabel, IonMenuButton, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import "./NewGroup.css";
 import { useState } from "react";
+import { baseUrl } from "../theme/variables";
 
 const NewGroupPage: React.FC = () => {
     const [groupname, setGroupname] = useState("");
@@ -25,7 +26,7 @@ const NewGroupPage: React.FC = () => {
             "Password": password
         };
 
-        const apiAddress = "http://localhost:5180/api/v1/groups";
+        const apiAddress = `${baseUrl}groups`;
 
         const init: RequestInit = {
             method: "POST",

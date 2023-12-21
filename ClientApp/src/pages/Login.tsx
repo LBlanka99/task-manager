@@ -1,6 +1,8 @@
 import { IonContent, IonPage, IonInput, IonButton, IonAlert, IonRow, IonCol, IonGrid, IonHeader, IonButtons, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Login.css';
+import { useHistory } from 'react-router';
+import { baseUrl } from '../theme/variables';
 
 interface LoginPageProps {
   setUserCookie: (cookie: string | undefined) => void;
@@ -8,14 +10,37 @@ interface LoginPageProps {
 
 const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
 
-  
+  const history = useHistory();
   const [groupname, setGroupname] = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleLogin(e: any) {
+  useEffect(() => {
+    // Check for query parameters on component mount
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const groupNameQueryParam = urlSearchParams.get("group");
+    const userNameQueryParam = urlSearchParams.get("user");
+    const passwordQueryParam = urlSearchParams.get("password");
+
+    if (groupNameQueryParam && userNameQueryParam && passwordQueryParam) {
+      // If query parameters are present, perform login
+      handleLoginFromQueryParams(groupNameQueryParam, userNameQueryParam, passwordQueryParam);
+    }
+  }, []);
+
+  async function handleLoginFromQueryParams(groupNameQueryParam: string, userNameQueryParam: string, passwordQueryParam: string) {
+    const credentials = {
+      "GroupName": groupNameQueryParam,
+      "UserName": userNameQueryParam,
+      "Password": passwordQueryParam
+    };
+
+    await handleLogin(credentials);
+  }
+
+  async function handleLoginFromForm(e: any) {
     e.preventDefault();
     const credentials = {
         "GroupName": groupname,
@@ -23,29 +48,31 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
         "Password": password
     };
 
-    const apiAddress = "http://localhost:5180/api/v1/users/log-in";
+    await handleLogin(credentials);
+  };
+
+  async function handleLogin(credentials:any) {
+    const apiAddress = `${baseUrl}users/log-in`;
 
     const init: RequestInit = {
-        method: "POST",
-        credentials: "include",
-        headers: new Headers([["content-type", "application/json"]]),
-        body: JSON.stringify(credentials),
+      method: "POST",
+      credentials: "include",
+      headers: new Headers([["content-type", "application/json"]]),
+      body: JSON.stringify(credentials),
     };
 
     const response = await fetch(apiAddress, init);
     if (response.ok) {
-        setUserCookie(getAuthCookie());
-        console.log("sikeres belépés");
-        //navigate to task's page
-    } else if (response.status == 404) {
-        setErrorMessage("Ilyen nevű csoport nem létezik!");
-        setShowAlert(true);
+      setUserCookie(getAuthCookie());
+      history.push("/tasks");
+    } else if (response.status === 404) {
+      setErrorMessage("Ilyen nevű csoport nem létezik!");
+      setShowAlert(true);
     } else {
       setErrorMessage("Hibás jelszó vagy felhasználónév!");
       setShowAlert(true);
     }
-    
-  };
+  }
 
   const getAuthCookie = () => {
     const userCookie = document.cookie.split("; ").find(row => row.startsWith("id"));
@@ -65,7 +92,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
       
       <IonContent className="ion-padding" scrollY={false}>
         <IonGrid className="login-content">
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLoginFromForm}>
             <div className="login-container">
                 <IonRow>
                     <IonCol size="12">

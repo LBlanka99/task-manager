@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManager.Entities.Models.Context;
 
@@ -10,9 +11,11 @@ using TaskManager.Entities.Models.Context;
 namespace TaskManager.Migrations
 {
     [DbContext(typeof(TaskManagerContext))]
-    partial class TaskManagerContextModelSnapshot : ModelSnapshot
+    [Migration("20231219133405_AddPointsAndProfilColorToUser")]
+    partial class AddPointsAndProfilColorToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +15,9 @@ public class UserModel
     public string? Email { get; set; }
     [Required]
     public string Password { get; set; }
+    [DefaultValue(0)]
+    public int Points { get; set; }
+    public string ProfilColor { get; set; }
     public string? ProfilePicture { get; set; }
     public List<string> Roles { get; set; } = new List<string>();
 }

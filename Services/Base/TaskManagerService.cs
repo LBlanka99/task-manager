@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using TaskManager.Entities.Models.Context;
 using TaskManager.Exceptions;
 
@@ -12,9 +14,16 @@ public class TaskManagerService
         _context = context;
     }
     
-    public async Task<T> FindEntityById<T>(Guid id) where T : class
+    public async Task<T> FindEntityById<T>(Guid id, params Expression<Func<T, object>>[] includes) where T : class
     {
-        T? entity = await _context.Set<T>().FindAsync(id);
+        IQueryable<T> query = _context.Set<T>().AsQueryable();
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        T? entity = await query.FirstOrDefaultAsync(t => EF.Property<Guid>(t, "Id") == id);
 
         if (entity is null)
         {

@@ -39,6 +39,8 @@ builder.Services.AddDbContext<TaskManagerContext>(options =>
 builder.Services.AddTransient<TaskManagerContext>();
 builder.Services.AddTransient<IGroupService, GroupService>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<ITaskService, TaskService>();
+builder.Services.AddTransient<ITagService, TagService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
@@ -85,6 +87,11 @@ app.Use(async (context, next) =>
     catch (IncorrectPasswordException e)
     {
         context.Response.StatusCode = 401;
+        await context.Response.WriteAsync(e.Message);
+    }
+    catch (YouDontHaveEnoughPointsException e)
+    {
+        context.Response.StatusCode = 404;
         await context.Response.WriteAsync(e.Message);
     }
 });

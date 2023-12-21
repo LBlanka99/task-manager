@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonNav, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
@@ -24,29 +24,69 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import LoginPage from './pages/Login';
 import NewGroupPage from './pages/NewGroup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import TaskListPage from './pages/TaskList';
+import { User } from './theme/interfaces';
+import NewTaskPage from './pages/NewTask';
+import TagListPage from './pages/TagList';
+import TaskDetails from './components/TaskDetails';
+import ProfilPage from './pages/Profil';
+import { baseUrl } from './theme/variables';
 
 setupIonicReact();
 
 const App: React.FC = () => {
-  const [userCookie, setUserCookie] = useState<string | undefined>(undefined);
+  const [userCookie, setUserCookie] = useState<string | undefined>(document.cookie?.split("; ").find(row => row.startsWith("id")));
+  const [currentUser, setCurrentUser] = useState();
+  const [currentGroup, setCurrentGroup] = useState();
+
+  useEffect(() => {
+    if (userCookie) {
+      const id = userCookie.split("=")[1];
+      
+      const groupApiAddress = `${baseUrl}groups/${id}`;
+      fetch(groupApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentGroup(res));
+
+      const userApiAddress = `${baseUrl}users/${id}`;
+      fetch(userApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentUser(res));
+    } else {
+      setCurrentUser(undefined);
+      setCurrentGroup(undefined);
+    }
+    
+  }, [userCookie]);
 
   return (
     <IonApp>
       <IonReactRouter>
         <IonSplitPane contentId="main">
-          <Menu userCookie={userCookie} setUserCookie={setUserCookie}/>
+          <Menu currentUser={currentUser} currentGroup={currentGroup} setUserCookie={setUserCookie}/>
           <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/folder/Inbox" />
-            </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page />
+            <Route path="/" exact>
+              <Redirect to="/login" />
             </Route>
             <Route path="/login" exact>
               <LoginPage setUserCookie={setUserCookie} />
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
+            <Route path="/tasks" exact>
+              <TaskListPage group={currentGroup} currentUser={currentUser} statusFilter={[0, 1]} />
+            </Route>
+            <Route path="/new-task" exact>
+              <NewTaskPage group={currentGroup} />
+            </Route>
+            <Route path="/tags" exact>
+              <TagListPage group={currentGroup} />
+            </Route>
+            <Route path="/tasks/:taskId">
+              <TaskDetails currentUser={currentUser} />
+            </Route>
+            <Route path="/my-profile">
+              <ProfilPage currentUser={currentUser} />
+            </Route>
+            <Route path="/old-tasks">
+              <TaskListPage group={currentGroup} currentUser={currentUser} statusFilter={[2]} />
+            </Route>
           </IonRouterOutlet>
         </IonSplitPane>
       </IonReactRouter>

@@ -52,6 +52,7 @@ public class UserController : ControllerBase
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         CookieOptions cookieOptions = new CookieOptions();
         cookieOptions.Secure = true;
+        cookieOptions.Expires = new DateTimeOffset(2038, 1, 1, 0, 0, 0, TimeSpan.FromHours(0));
         Response.Cookies.Append("id", user.Id.ToString(), cookieOptions);
 
         await HttpContext.SignInAsync(
@@ -71,6 +72,19 @@ public class UserController : ControllerBase
         return await _userService.FindEntityById<UserModel>(userId);
     }
 
-    
+    [Authorize(Roles = "taskCreator")]
+    [HttpPatch("{userId}/add-points")]
+    public async Task<UserModel> AddPointsToUserById(Guid userId, [FromBody] int points)
+    {
+        return await _userService.AddPointsToUserById(userId, points);
+    }
+
+    [HttpPatch("{userId}/reduce-points")]
+    public async Task<UserModel> RedeemPoints(Guid userId, [FromBody] int points)
+    {
+        return await _userService.RedeemPoints(userId, points);
+    }
+
+
 
 }
