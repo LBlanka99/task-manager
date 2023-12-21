@@ -6,10 +6,10 @@ import { getContrastColor } from "../theme/colorUtils";
 
 interface TaskProps {
     taskModel: Task,
-    currentUser: User
+    className: string
 }
 
-const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
+const TaskCard: React.FC<TaskProps> = ({taskModel, className}) => {
     const today = new Date();
     today.setHours(0);
     today.setMinutes(0);
@@ -22,9 +22,9 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, currentUser}) => {
     
     return (
         <IonRouterLink routerDirection="forward" routerLink={detailsUrl}>
-        <IonCard  className="card" button >
+        <IonCard  className={className} button >
             <IonCardHeader>
-                <IonCardTitle className="ion-text-center">{taskModel.title}</IonCardTitle>
+                <IonCardTitle className="ion-text-center" >{taskModel.title}</IonCardTitle>
             </IonCardHeader>
 
             <IonCardContent style={{padding: "0px"}}>

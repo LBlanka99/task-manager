@@ -9,9 +9,10 @@ import { menuController } from '@ionic/core/components';
 interface TaskListPageProps {
     group: Group | undefined;
     currentUser: User | undefined;
+    statusFilter: number[];
 }
 
-const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
+const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser, statusFilter }) => {
     const [loading, setLoading] = useState(true);
     const [allTasks, setAllTasks] = useState<Task[]>([]);
     const [displayTasks, setDisplayTasks] = useState<Task[]>(allTasks);
@@ -38,17 +39,20 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
     const fetchTasks = async () => {
         const apiAddress = `http://localhost:5180/api/v1/groups/all-tasks/${group?.id}`;
         const response = await fetch(apiAddress, { credentials: "include" });
-        const responseTask: Task[] = await response.json();
+        let responseTask: Task[] = await response.json();
+        if (statusFilter.length > 0) {
+            responseTask = responseTask.filter(t => statusFilter.includes(t.status));
+        }
         setAllTasks(responseTask);
     }
 
     useEffect(() => {
-        if (group && loading) {
+        if (group && loading && statusFilter.length > 0) {
             fetchTasks();
             setLoading(false);
         }
 
-    }, [group, loading])
+    }, [group, loading, statusFilter])
 
     useIonViewWillEnter(() => {
         setLoading(true);
@@ -141,7 +145,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
         }
 
         setDisplayTasks([...resultTasks]);
-        await menuController.close("end");
+        await menuController.close(statusFilter.includes(0) ? "tasks-filter-menu" : "old-tasks-filter-menu");
     };
 
     const handleDeleteFilters = () => {
@@ -151,7 +155,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
 
     return (
         <>
-            <IonMenu side="end" contentId="filter-content">
+            <IonMenu side="end" contentId="filter-content" menuId={statusFilter.includes(0) ? "tasks-filter-menu" : "old-tasks-filter-menu"}>
                 <IonHeader mode="ios" style={{ padding: "3px" }}>
                     <IonToolbar class="ion-align-items-center">
                         <IonButton aria-label="close filter menu" fill="clear" onClick={async () => await menuController.close("end")}>
@@ -276,36 +280,31 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                                 ))}
                             </div>
                         </IonAccordion>
+                        {statusFilter.includes(0) &&
                         <IonAccordion>
                             <IonItem className="filter-header" slot="header" color="primary">
                                 Státusz
                             </IonItem>
                             <div className="ion-padding-top ion-padding-bottom" slot="content">
-                                <IonItem>
-                                    <IonCheckbox onIonChange={c => handleStatusSelect(c.detail.checked, 0)}>Folyamatban</IonCheckbox>
-                                </IonItem>
-                                <IonItem>
-                                    <IonCheckbox onIonChange={c => handleStatusSelect(c.detail.checked, 1)}>Jóváhagyásra vár</IonCheckbox>
-                                </IonItem>
-                                <IonItem>
-                                    <IonCheckbox onIonChange={c => handleStatusSelect(c.detail.checked, 2)}>Befejezett</IonCheckbox>
-                                </IonItem>
+                                
+                                        <IonItem>
+                                            <IonCheckbox onIonChange={c => handleStatusSelect(c.detail.checked, 0)}>Folyamatban</IonCheckbox>
+                                        </IonItem>
+                                        <IonItem>
+                                            <IonCheckbox onIonChange={c => handleStatusSelect(c.detail.checked, 1)}>Jóváhagyásra vár</IonCheckbox>
+                                        </IonItem>
+                                
                             </div>
                         </IonAccordion>
+                        }
                     </IonAccordionGroup>
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-
-
                                 <IonButton color="dark" onClick={handleFilter}>Mutasd</IonButton>
-
                             </IonCol>
                             <IonCol>
-
-
                                 <IonButton disabled={!isAnyFilter} color="light" onClick={handleDeleteFilters}>Összes törlése</IonButton>
-
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -317,12 +316,12 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                         <IonButtons slot="start">
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Feladatok</IonTitle>
+                        <IonTitle>{statusFilter.includes(2) ? "Lezárt feladatok" : "Feladatok"}</IonTitle>
                     </IonToolbar>
-                    <IonItem lines="full">
+                    <IonItem lines="full" className="dark-blue-background">
                         <IonGrid>
                             <IonRow class="ion-justify-content-around">
-                                <IonItem lines="none" className="item-without-padding">
+                                <IonItem lines="none" className="item-without-padding dark-blue-background">
                                     <IonChip className="filter-chip">
                                         <IonButton fill="clear" aria-label="desc/asc order" className="ion-no-padding ion-no-margin" style={{ marginRight: "10px" }} onClick={() => { setIsAscending(!isAscending) }}>
                                             <IonIcon slot="icon-only" aria-hidden icon={arrowIcon} color="light"></IonIcon>
@@ -342,7 +341,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                                         </IonSelect>
                                     </IonChip>
                                 </IonItem>
-                                <IonChip className="filter-chip" aria-label="filter" onClick={async () => await menuController.open("end")}>
+                                <IonChip className="filter-chip" aria-label="filter" onClick={async () => await menuController.open(statusFilter.includes(0) ? "tasks-filter-menu" : "old-tasks-filter-menu")}>
                                     <IonIcon aria-hidden icon={options} color="light" style={{ marginRight: "13px", marginLeft: "4px" }} />
                                     <IonLabel style={{ marginRight: "3px" }}>Szűrés</IonLabel>
                                 </IonChip>
@@ -351,9 +350,9 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser }) => {
                     </IonItem>
                 </IonHeader>
                 {group &&
-                    <IonContent>
+                    <IonContent  color={statusFilter.includes(2) ? "" : "light"} className={statusFilter.includes(2) ? "dark-blue-background" : ""}>
                         {displayTasks.length > 0 ? displayTasks.map((task, index) => (
-                            <TaskCard key={index} taskModel={task} currentUser={currentUser!}></TaskCard>
+                            <TaskCard key={index} taskModel={task} className={statusFilter.includes(2) ? "old-card" : "card"}></TaskCard>
                         ))
                             :
                             <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>

@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { addCircleOutline, addCircleSharp, copyOutline, copySharp, duplicateOutline, duplicateSharp, logInOutline, logInSharp, logOutOutline, logOutSharp, personCircleOutline, personCircleSharp, personOutline, personSharp, pricetagsOutline, pricetagsSharp } from 'ionicons/icons';
+import { addCircleOutline, addCircleSharp, copyOutline, copySharp, duplicateOutline, duplicateSharp, libraryOutline, librarySharp, logInOutline, logInSharp, logOutOutline, logOutSharp, personCircleOutline, personCircleSharp, personOutline, personSharp, pricetagsOutline, pricetagsSharp } from 'ionicons/icons';
 import './Menu.css';
 import { useEffect, useState } from 'react';
 import { Group, User } from '../theme/interfaces';
@@ -52,6 +52,12 @@ const appPagesWhenLoggedInAsTaskCreator: AppPage[] = [
     mdIcon: duplicateSharp
   },
   {
+    title: "Befejezett feladatok",
+    url: "/old-tasks",
+    iosIcon: libraryOutline,
+    mdIcon: librarySharp
+  },
+  {
     title: "Címkék",
     url: "/tags",
     iosIcon: pricetagsOutline,
@@ -71,6 +77,12 @@ const appPagesWhenLoggedInAsSimpleUser: AppPage[] = [
     url: "/tasks",
     iosIcon: copyOutline,
     mdIcon: copySharp
+  },
+  {
+    title: "Befejezett feladatok",
+    url: "/old-tasks",
+    iosIcon: libraryOutline,
+    mdIcon: librarySharp
   },
   {
     title: "Címkék",

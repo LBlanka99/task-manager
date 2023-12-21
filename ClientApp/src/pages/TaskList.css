@@ -51,3 +51,7 @@ ion-menu.md ion-item {
     --padding-start: 0px;
     --inner-padding-end: 0px;
 }
+
+.dark-blue-background {
+    --background: #040b18;
+}

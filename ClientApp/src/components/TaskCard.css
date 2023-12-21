@@ -18,4 +18,14 @@ ion-card-content {
         margin-left: auto;
         margin-right: auto;
     }
+
+    .old-card {
+        max-width: 450px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.card {
+    background-color: #040b18;
 }

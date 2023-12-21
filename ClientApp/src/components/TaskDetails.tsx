@@ -208,7 +208,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
             pointsToAdd = (pointsToAdd - daysPassed) < 1 ? 1 : pointsToAdd - daysPassed;
         }
 
-        task?.assignees.forEach(user => {
+        task?.assignees.forEach( async (user) => {
             const apiAddress = `http://localhost:5180/api/v1/users/${user.id}/add-points`;
             const init: RequestInit = {
                 method: "PATCH",
@@ -216,7 +216,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
                 headers: new Headers([["content-type", "application/json"]]),
                 body: JSON.stringify(pointsToAdd),
             }
-            fetch(apiAddress, init);
+            await fetch(apiAddress, init);
         })
     }
 

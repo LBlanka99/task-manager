@@ -69,7 +69,7 @@ const App: React.FC = () => {
             </Route>
             <Route path="/new-group" component={NewGroupPage} exact />
             <Route path="/tasks" exact>
-              <TaskListPage group={currentGroup} currentUser={currentUser} />
+              <TaskListPage group={currentGroup} currentUser={currentUser} statusFilter={[0, 1]} />
             </Route>
             <Route path="/new-task" exact>
               <NewTaskPage group={currentGroup} />
@@ -82,6 +82,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/my-profile">
               <ProfilPage currentUser={currentUser} />
+            </Route>
+            <Route path="/old-tasks">
+              <TaskListPage group={currentGroup} currentUser={currentUser} statusFilter={[2]} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>
