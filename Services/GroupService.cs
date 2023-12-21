@@ -12,9 +12,11 @@ namespace TaskManager.Services;
 public class GroupService : TaskManagerService, IGroupService
 {
     private readonly IPasswordHasher<UserModel> _hasher;
+    private readonly Random _random;
     public GroupService(TaskManagerContext context) : base(context)
     {
         _hasher = new PasswordHasher<UserModel>();
+        _random = new Random();
     }
 
     public async Task<GroupModel?> GetGroupByName(string groupName)
@@ -30,11 +32,14 @@ public class GroupService : TaskManagerService, IGroupService
             throw new GroupNameAlreadyInUseException("This group name is already taken! You should pick another.");
         }
         
+        string randomColor = $"#{_random.Next(256):X2}{_random.Next(256):X2}{_random.Next(256):X2}";
+        
         var user = new UserModel
         {
             UserName = data.UserName,
             Password = data.Password,
-            Roles = new List<string> { "admin", "taskCreator" }
+            Roles = new List<string> { "admin", "taskCreator" },
+            ProfilColor = randomColor
         };
         
         var hashedPassword = _hasher.HashPassword(user, user.Password);
