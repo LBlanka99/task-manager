@@ -15,6 +15,7 @@ import { addCircleOutline, addCircleSharp, copyOutline, copySharp, duplicateOutl
 import './Menu.css';
 import { useEffect, useState } from 'react';
 import { Group, User } from '../theme/interfaces';
+import { baseUrl } from '../theme/variables';
 
 interface AppPage {
   url: string;
@@ -103,7 +104,7 @@ const Menu: React.FC<MenuProps> = ({currentUser, currentGroup, setUserCookie}) =
 
 
   const handleLogout = async () => {
-    await fetch("http://localhost:5180/api/v1/users/log-out", {credentials: "include"});
+    await fetch(`${baseUrl}users/log-out`, {credentials: "include"});
     setUserCookie(undefined);
   }
 

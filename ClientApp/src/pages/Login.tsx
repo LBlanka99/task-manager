@@ -2,6 +2,7 @@ import { IonContent, IonPage, IonInput, IonButton, IonAlert, IonRow, IonCol, Ion
 import React, { useEffect, useState } from 'react';
 import './Login.css';
 import { useHistory } from 'react-router';
+import { baseUrl } from '../theme/variables';
 
 interface LoginPageProps {
   setUserCookie: (cookie: string | undefined) => void;
@@ -51,7 +52,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
   };
 
   async function handleLogin(credentials:any) {
-    const apiAddress = "http://localhost:5180/api/v1/users/log-in";
+    const apiAddress = `${baseUrl}users/log-in`;
 
     const init: RequestInit = {
       method: "POST",

@@ -2,6 +2,8 @@ import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonDatetime, IonDa
 import "./NewTask.css";
 import { useEffect, useRef, useState } from "react";
 import { Group, Tag, Task, User } from "../theme/interfaces";
+import { useHistory } from "react-router";
+import { baseUrl } from "../theme/variables";
 
 interface NewTaskPageProps {
     group: Group | undefined;
@@ -17,6 +19,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
     const [showAlert, setShowAlert] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    const history = useHistory();
 
     const createNewTask = async (e: any) => {
         e.preventDefault();
@@ -37,7 +40,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
             "description": description
         }
 
-        const apiAddress = `http://localhost:5180/api/v1/tasks/${group?.id}/new-task`;
+        const apiAddress = `${baseUrl}tasks/${group?.id}/new-task`;
 
         const init: RequestInit = {
             method: "POST",
@@ -48,7 +51,8 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
 
         const response = await fetch(apiAddress, init);
         if (response.ok) {
-            //navigate to /tasks
+            history.push("/tasks");
+            return;
         } else {
             setErrorMessage("Ismeretlen hiba lépett fel.");
             setShowAlert(true);

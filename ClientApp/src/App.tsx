@@ -31,6 +31,7 @@ import NewTaskPage from './pages/NewTask';
 import TagListPage from './pages/TagList';
 import TaskDetails from './components/TaskDetails';
 import ProfilPage from './pages/Profil';
+import { baseUrl } from './theme/variables';
 
 setupIonicReact();
 
@@ -43,10 +44,10 @@ const App: React.FC = () => {
     if (userCookie) {
       const id = userCookie.split("=")[1];
       
-      const groupApiAddress = `http://localhost:5180/api/v1/groups/${id}`;
+      const groupApiAddress = `${baseUrl}groups/${id}`;
       fetch(groupApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentGroup(res));
 
-      const userApiAddress = `http://localhost:5180/api/v1/users/${id}`;
+      const userApiAddress = `${baseUrl}users/${id}`;
       fetch(userApiAddress, {credentials: "include"}).then(res => res.json()).then(res => setCurrentUser(res));
     } else {
       setCurrentUser(undefined);

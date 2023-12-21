@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { calendar, person, pricetag, informationCircle, calendarOutline, calendarSharp, personOutline, personSharp, trophyOutline, trophySharp, pricetagOutline, pricetagSharp, hourglassOutline, hourglassSharp, informationCircleOutline, trashOutline, trashSharp, pencilOutline, pencilSharp, checkmarkCircleOutline, checkmarkCircleSharp, checkmarkOutline, checkmarkSharp, happyOutline, happySharp, arrowUndoOutline, arrowUndoSharp, saveOutline, saveSharp, closeCircleOutline, closeSharp, closeCircleSharp, addOutline, addSharp, skullOutline, skullSharp, cloudDoneOutline } from "ionicons/icons";
 import { useParams } from "react-router";
 import { getContrastColor } from "../theme/colorUtils";
+import { baseUrl } from "../theme/variables";
 
 interface TaskDetailsProps {
     currentUser: User | undefined;
@@ -36,7 +37,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
     const tagModal = useRef<HTMLIonModalElement>(null);
 
     useEffect(() => {
-        const apiAddress = `http://localhost:5180/api/v1/tasks/${taskId}`;
+        const apiAddress = `${baseUrl}tasks/${taskId}`;
 
         fetch(apiAddress, { credentials: "include" }).then((res) => res.json()).then((res: Task) => {
             setTask(res);
@@ -76,7 +77,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
 
     useEffect(() => {
         if (currentUser) {
-            const apiAddress = `http://localhost:5180/api/v1/groups/${currentUser.id}`;
+            const apiAddress = `${baseUrl}groups/${currentUser.id}`;
 
             fetch(apiAddress, { credentials: "include" }).then((res) => res.json()).then((res: Group) => {
                 let allUsers = res.members;
@@ -89,7 +90,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
 
     useEffect(() => {
         if (currentUser) {
-            const apiAddress = `http://localhost:5180/api/v1/groups/${currentUser.id}`;
+            const apiAddress = `${baseUrl}groups/${currentUser.id}`;
 
             fetch(apiAddress, { credentials: "include" }).then((res) => res.json()).then((res: Group) => {
                 let allTags = res.tags;
@@ -101,7 +102,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
     }, [newTags]);
 
     const handleDeleteTask = async () => {
-        const apiAddress = `http://localhost:5180/api/v1/tasks/${task?.id}`;
+        const apiAddress = `${baseUrl}tasks/${task?.id}`;
 
         const init: RequestInit = {
             method: "DELETE",
@@ -134,7 +135,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
             "description": newDescription
         }
 
-        const apiAddress = `http://localhost:5180/api/v1/tasks/${task?.id}`;
+        const apiAddress = `${baseUrl}tasks/${task?.id}`;
 
         const init: RequestInit = {
             method: "PUT",
@@ -170,7 +171,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
     };
 
     const changeTaskStatus = async (statusNumber: Number) => {
-        const apiAddress = `http://localhost:5180/api/v1/tasks/${task?.id}/status-change`;
+        const apiAddress = `${baseUrl}tasks/${task?.id}/status-change`;
 
         const init: RequestInit = {
             method: "PATCH",
@@ -209,7 +210,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
         }
 
         task?.assignees.forEach( async (user) => {
-            const apiAddress = `http://localhost:5180/api/v1/users/${user.id}/add-points`;
+            const apiAddress = `${baseUrl}users/${user.id}/add-points`;
             const init: RequestInit = {
                 method: "PATCH",
                 credentials: "include",

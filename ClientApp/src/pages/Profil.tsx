@@ -4,6 +4,7 @@ import { atOutline, atSharp, constructOutline, constructSharp, giftOutline, gift
 import { User } from "../theme/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { getContrastColor } from "../theme/colorUtils";
+import { baseUrl } from "../theme/variables";
 
 interface ProfilPageProps {
     currentUser: User | undefined;
@@ -31,7 +32,7 @@ const ProfilPage: React.FC<ProfilPageProps> = ({ currentUser }) => {
             setErrorMessage(undefined);
         }
 
-        const apiAddress = `http://localhost:5180/api/v1/users/${user?.id}/reduce-points`;
+        const apiAddress = `${baseUrl}users/${user?.id}/reduce-points`;
 
         const init: RequestInit = {
             method: "PATCH",

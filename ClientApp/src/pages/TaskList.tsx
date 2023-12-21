@@ -5,6 +5,7 @@ import { Group, Tag, Task, User } from "../theme/interfaces";
 import TaskCard from "../components/TaskCard";
 import { add, arrowDown, arrowUp, caretDownOutline, caretDownSharp, caretUpOutline, caretUpSharp, checkmarkCircleOutline, checkmarkCircleSharp, close, closeCircleOutline, closeCircleSharp, eye, funnelOutline, funnelSharp, options, toggle, trailSignOutline, trashBinOutline, trashBinSharp } from "ionicons/icons";
 import { menuController } from '@ionic/core/components';
+import { baseUrl } from "../theme/variables";
 
 interface TaskListPageProps {
     group: Group | undefined;
@@ -37,7 +38,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser, statusF
     }, [isAscending]);
 
     const fetchTasks = async () => {
-        const apiAddress = `http://localhost:5180/api/v1/groups/all-tasks/${group?.id}`;
+        const apiAddress = `${baseUrl}groups/all-tasks/${group?.id}`;
         const response = await fetch(apiAddress, { credentials: "include" });
         let responseTask: Task[] = await response.json();
         if (statusFilter.length > 0) {

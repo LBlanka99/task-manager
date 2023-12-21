@@ -4,6 +4,7 @@ import { Group, Tag } from "../theme/interfaces";
 import { add, addCircleOutline, addCircleSharp, pencil, pencilOutline, pencilSharp, trash, trashOutline, trashSharp } from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
 import { getContrastColor } from "../theme/colorUtils";
+import { baseUrl } from "../theme/variables";
 
 interface TagListPageProps {
     group: Group | undefined;
@@ -41,7 +42,7 @@ const TagListPage: React.FC<TagListPageProps> = ({ group }) => {
 
 
     const handleDeleteTag = async () => {
-        const apiAddress = `http://localhost:5180/api/v1/tags/${deletingTag?.id}`;
+        const apiAddress = `${baseUrl}tags/${deletingTag?.id}`;
 
         const init: RequestInit = {
             method: "DELETE",
@@ -57,7 +58,7 @@ const TagListPage: React.FC<TagListPageProps> = ({ group }) => {
 
     const handleSaveEdit = async (e: any) => {
         e.preventDefault();
-        const apiAddress = `http://localhost:5180/api/v1/tags/${editingTag?.id}`;
+        const apiAddress = `${baseUrl}tags/${editingTag?.id}`;
 
         const updatedTag = {
             "name": editingTagName,
@@ -84,7 +85,7 @@ const TagListPage: React.FC<TagListPageProps> = ({ group }) => {
     const handleCreateTag = async (e: any) => {
         e.preventDefault();
 
-        const apiAddress = `http://localhost:5180/api/v1/tags/${group?.id}/new-tag`;
+        const apiAddress = `${baseUrl}tags/${group?.id}/new-tag`;
 
         const newTag = {
             "name": newTagName,
