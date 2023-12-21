@@ -358,7 +358,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser, statusF
                             :
                             <IonText className="no-tasks"><p>Nincsenek feladatok.</p></IonText>
                         }
-                        {currentUser?.roles.includes("taskCreator") &&
+                        {currentUser?.roles.includes("taskCreator") && statusFilter.includes(0) &&
                             <IonFab slot="fixed" vertical="bottom" horizontal="end" class="ion-margin">
                                 <IonFabButton aria-label="new-task" color={"primary"} routerLink="/new-task" routerDirection="forward">
                                     <IonIcon icon={add}></IonIcon>
