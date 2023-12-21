@@ -77,4 +77,11 @@ public class GroupService : TaskManagerService, IGroupService
         
         return group.Tasks;
     }
+
+    public async Task<List<TagModel>> GetAllTagsInAGroup(Guid groupId)
+    {
+        var group = await FindEntityById<GroupModel>(groupId, g => g.Tags);
+
+        return group.Tags;
+    }
 }

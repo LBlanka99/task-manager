@@ -9,4 +9,5 @@ public interface IGroupService
     Task<GroupModel> CreateNewGroup(NewGroupDTO data);
     Task<GroupModel> GetGroupByUserId(Guid userId);
     Task<List<TaskModel>> GetAllTasksInAGroup(Guid groupId);
+    Task<List<TagModel>> GetAllTagsInAGroup(Guid groupId);
 }

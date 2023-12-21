@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonDatetime, IonDatetimeButton, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonModal, IonPage, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonDatetime, IonDatetimeButton, IonGrid, IonHeader, IonInput, IonItem, IonLabel, IonMenuButton, IonModal, IonPage, IonRow, IonSelect, IonSelectOption, IonText, IonTextarea, IonTitle, IonToolbar, useIonViewWillEnter } from "@ionic/react";
 import "./NewTask.css";
 import { useEffect, useRef, useState } from "react";
 import { Group, Tag, Task, User } from "../theme/interfaces";
@@ -10,6 +10,8 @@ interface NewTaskPageProps {
 }
 
 const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
+    const [allTags, setAllTags] = useState<Tag[]>(group?.tags ?? []);
+    const [isLoading, setIsLoading] = useState(true);
     const [taskName, setTaskName] = useState("");
     const [deadline, setDeadline] = useState<string | string[] >(new Date().toISOString().slice(0, 10));
     const [assignees, setAssignees] = useState<User[]>([]);
@@ -20,6 +22,22 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const history = useHistory();
+
+    useEffect(() => {
+        if (group && isLoading) {
+            console.log("ide?");
+            const apiAddress = `${baseUrl}groups/all-tags/${group?.id}`;
+
+            fetch(apiAddress, {credentials: "include"}).then((res) => res.json()).then((res) => setAllTags(res));
+
+            setIsLoading(false);
+        }
+        
+    }, [group, isLoading])
+
+    useIonViewWillEnter(() => {
+        setIsLoading(true);
+    })
 
     const createNewTask = async (e: any) => {
         e.preventDefault();
@@ -152,11 +170,9 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                         value={tags}
                         onIonChange={e => setTags(e.detail.value)}
                     >
-                        {group.tags.map((tag, index) => (
+                        {allTags.map((tag, index) => (
                             <IonSelectOption key={index} value={tag}>{tag.name}</IonSelectOption>
                         ))}
-                        //TODO: this part is not completed
-                        <IonSelectOption value={"new"}>Új címke</IonSelectOption>
                     </IonSelect>
                     </IonItem>
                     
