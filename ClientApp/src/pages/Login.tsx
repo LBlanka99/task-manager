@@ -1,6 +1,7 @@
 import { IonContent, IonPage, IonInput, IonButton, IonAlert, IonRow, IonCol, IonGrid, IonHeader, IonButtons, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react';
 import './Login.css';
+import { useHistory } from 'react-router';
 
 interface LoginPageProps {
   setUserCookie: (cookie: string | undefined) => void;
@@ -8,7 +9,7 @@ interface LoginPageProps {
 
 const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
 
-  
+  const history = useHistory();
   const [groupname, setGroupname] = useState("");
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -35,8 +36,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
     const response = await fetch(apiAddress, init);
     if (response.ok) {
         setUserCookie(getAuthCookie());
-        console.log("sikeres belépés");
-        //navigate to task's page
+        history.push("/tasks");
     } else if (response.status == 404) {
         setErrorMessage("Ilyen nevű csoport nem létezik!");
         setShowAlert(true);
