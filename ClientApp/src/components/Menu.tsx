@@ -53,7 +53,7 @@ const appPagesWhenLoggedInAsTaskCreator: AppPage[] = [
     mdIcon: duplicateSharp
   },
   {
-    title: "Befejezett feladatok",
+    title: "Elvégzett feladatok",
     url: "/old-tasks",
     iosIcon: libraryOutline,
     mdIcon: librarySharp
@@ -80,7 +80,7 @@ const appPagesWhenLoggedInAsSimpleUser: AppPage[] = [
     mdIcon: copySharp
   },
   {
-    title: "Befejezett feladatok",
+    title: "Elvégzett feladatok",
     url: "/old-tasks",
     iosIcon: libraryOutline,
     mdIcon: librarySharp

@@ -317,7 +317,7 @@ const TaskListPage: React.FC<TaskListPageProps> = ({ group, currentUser, statusF
                         <IonButtons slot="start">
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>{statusFilter.includes(2) ? "Lezárt feladatok" : "Feladatok"}</IonTitle>
+                        <IonTitle>{statusFilter.includes(2) ? "Elvégzett feladatok" : "Feladatok"}</IonTitle>
                     </IonToolbar>
                     <IonItem lines="full" className="dark-blue-background">
                         <IonGrid>

@@ -55,7 +55,7 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, className}) => {
                             <img alt="profile picture" src={assignee.profilPicture!} />
                             </IonAvatar>
                             ) : (
-                            <IonChip style={{ backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor), marginLeft: "7px" }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                            <IonChip key={index} style={{ backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor), marginLeft: "7px" }}>{assignee.userName[0].toUpperCase()}</IonChip>
                             )
                         
                         ))}
