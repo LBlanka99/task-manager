@@ -28,3 +28,12 @@ jobs:
           npm ci
           ionic build --prod
           rsync -r /root/actions-runner/_work/task-manager/task-manager/ClientApp/dist/* /var/www/tenni-venni/
+
+      - name: backend
+        run: |
+          # pm2 start "dotnet" --name "backend" -- "TaskManager.dll"
+          pm2 stop backend
+          cd ~/actions-runner/_work/task-manager/task-manager/
+          dotnet publish -c release -o ~/tenni-venni-dotnet/ -r linux-x64
+          cd ~/tenni-venni-dotnet/
+          pm2 start backend
