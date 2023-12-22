@@ -13,7 +13,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
     const [allTags, setAllTags] = useState<Tag[]>(group?.tags ?? []);
     const [isLoading, setIsLoading] = useState(true);
     const [taskName, setTaskName] = useState("");
-    const [deadline, setDeadline] = useState<string | string[] >(new Date().toISOString().slice(0, 10));
+    const [deadline, setDeadline] = useState<string | string[] >();
     const [assignees, setAssignees] = useState<User[]>([]);
     const [points, setPoints] = useState<number>();
     const [tags, setTags] = useState<Tag[]>();
@@ -25,7 +25,6 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
 
     useEffect(() => {
         if (group && isLoading) {
-            console.log("ide?");
             const apiAddress = `${baseUrl}groups/all-tags/${group?.id}`;
 
             fetch(apiAddress, {credentials: "include"}).then((res) => res.json()).then((res) => setAllTags(res));
@@ -57,6 +56,14 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
             "tags": tags,
             "description": description
         }
+
+        if (deadline == undefined) {
+            const utcDeadline = new Date();
+            const localDeadline = new Date(utcDeadline.getTime() - utcDeadline.getTimezoneOffset() * 60000);
+            const isoFormattedDeadline = localDeadline.toISOString().slice(0, 10);
+
+            newTask.deadline = isoFormattedDeadline;
+        } 
 
         const apiAddress = `${baseUrl}tasks/${group?.id}/new-task`;
 
@@ -157,7 +164,7 @@ const NewTaskPage: React.FC<NewTaskPageProps> = ({group}) => {
                         doneText="Kész"
                         cancelText="Mégsem"
                         max="2030-12-31"
-                        min={new Date().toISOString()}
+                        min={new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString()}
                         onIonChange={e => setDeadline(e.detail.value!.slice(0, 10))}
                     />
                     </IonModal>
