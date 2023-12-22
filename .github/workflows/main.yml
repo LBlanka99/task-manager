@@ -12,14 +12,19 @@ jobs:
     runs-on: self-hosted
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [20.x]
 
     steps:
       - uses: actions/checkout@v1
-
-     
 
       - name: Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: client
+        run: |
+          cd ~/actions-runner/_work/task-manager/task-manager/ClientApp/
+          npm ci
+          ionic build --prod
+          rsync -r /root/actions-runner/_work/task-manager/task-manager/ClientApp/dist/* /var/www/tenni-venni/
