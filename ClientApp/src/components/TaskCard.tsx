@@ -49,13 +49,15 @@ const TaskCard: React.FC<TaskProps> = ({taskModel, className}) => {
                     <IonCol className="ion-text-end">
                     <div className="assignee-row ion-text-end">
                         {taskModel.assignees.map((assignee, index) => (
+                            assignee.profilPicture !== undefined ? (
                         <IonAvatar key={index}>
-                            {assignee.profilPicture !== undefined ? (
+                            
                             <img alt="profile picture" src={assignee.profilPicture!} />
+                            </IonAvatar>
                             ) : (
-                            <IonChip style={{ backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor) }}>{assignee.userName[0].toUpperCase()}</IonChip>
-                            )}
-                        </IonAvatar>
+                            <IonChip style={{ backgroundColor: assignee.profilColor, color: getContrastColor(assignee.profilColor), marginLeft: "7px" }}>{assignee.userName[0].toUpperCase()}</IonChip>
+                            )
+                        
                         ))}
                     </div>
                     </IonCol>
