@@ -3,7 +3,7 @@ import "./TaskDetails.css";
 import { Group, Tag, Task, User } from "../theme/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { calendar, person, pricetag, informationCircle, calendarOutline, calendarSharp, personOutline, personSharp, trophyOutline, trophySharp, pricetagOutline, pricetagSharp, hourglassOutline, hourglassSharp, informationCircleOutline, trashOutline, trashSharp, pencilOutline, pencilSharp, checkmarkCircleOutline, checkmarkCircleSharp, checkmarkOutline, checkmarkSharp, happyOutline, happySharp, arrowUndoOutline, arrowUndoSharp, saveOutline, saveSharp, closeCircleOutline, closeSharp, closeCircleSharp, addOutline, addSharp, skullOutline, skullSharp, cloudDoneOutline } from "ionicons/icons";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { getContrastColor } from "../theme/colorUtils";
 import { baseUrl } from "../theme/variables";
 
@@ -35,6 +35,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
 
     const assigneeModal = useRef<HTMLIonModalElement>(null);
     const tagModal = useRef<HTMLIonModalElement>(null);
+    const history = useHistory();
 
     useEffect(() => {
         const apiAddress = `${baseUrl}tasks/${taskId}`;
@@ -111,7 +112,7 @@ const TaskDetails: React.FC<TaskDetailsProps> = ({ currentUser }) => {
         }
         const response = await fetch(apiAddress, init);
 
-        location.reload();
+        history.push("/tasks");
     }
 
     const handleEditTask = async () => {
