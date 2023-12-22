@@ -1,4 +1,4 @@
 
-export const baseUrl = "https://tenni-venni/api/v1/";
+export const baseUrl = "https://tenni-venni.hu/api/v1/";
 
 // majd ez lesz: 
