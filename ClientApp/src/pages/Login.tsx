@@ -1,4 +1,4 @@
-import { IonContent, IonPage, IonInput, IonButton, IonAlert, IonRow, IonCol, IonGrid, IonHeader, IonButtons, IonMenuButton, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonPage, IonInput, IonButton, IonAlert, IonRow, IonCol, IonGrid, IonHeader, IonButtons, IonMenuButton, IonTitle, IonToolbar, IonLoading } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import './Login.css';
 import { useHistory } from 'react-router';
@@ -16,6 +16,7 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
   const [password, setPassword] = useState('');
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
     // Check for query parameters on component mount
@@ -26,6 +27,9 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
 
     if (groupNameQueryParam && userNameQueryParam && passwordQueryParam) {
       // If query parameters are present, perform login
+      setGroupname(groupNameQueryParam);
+      setUsername(userNameQueryParam);
+      setPassword(passwordQueryParam);
       handleLoginFromQueryParams(groupNameQueryParam, userNameQueryParam, passwordQueryParam);
     }
   }, []);
@@ -52,6 +56,8 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
   };
 
   async function handleLogin(credentials:any) {
+    setShowLoading(true);
+
     const apiAddress = `${baseUrl}users/log-in`;
 
     const init: RequestInit = {
@@ -62,6 +68,9 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
     };
 
     const response = await fetch(apiAddress, init);
+
+    setShowLoading(false);
+
     if (response.ok) {
       setUserCookie(getAuthCookie());
       history.push("/tasks");
@@ -144,6 +153,11 @@ const LoginPage: React.FC<LoginPageProps> = ({setUserCookie}) => {
           header={"Sikertelen bejelentkezés"}
           message={errorMessage}
           buttons={['OK']}
+        />
+        <IonLoading
+          className="custom-loading"
+          isOpen={showLoading}
+          message={'Bejelentkezés...'}
         />
       </IonContent>
     </IonPage>

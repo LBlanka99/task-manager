@@ -14,3 +14,8 @@
 form ion-input {
     margin-bottom: 10px;
   }
+
+ion-loading.custom-loading {
+  --spinner-color: var(--ion-color-primary);
+  color: var(--ion-color-primary);
+}
