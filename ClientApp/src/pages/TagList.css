@@ -15,10 +15,7 @@ ion-chip ion-button {
     justify-content: center;
 }
 
-.modal::part(backdrop) {
-    background: rgb(148, 165, 189);
-    opacity: 1;
-}
+
 
 .modal form {
     max-width: 500px;
